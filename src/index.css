@@ -175,16 +175,23 @@ button:focus, input:focus, select:focus, textarea:focus {
 .liveMatchSlot.live{
   border: 1px solid #FFCC00;
 }
-.vertical-scroll-profile{
+.vertical-scroll-container{
   margin-top: 6px;
   scrollbar-width: none;
-  width:94vw;
+  width:375px;
+  justify-content: center;
+  align-items: center;
+}
+.vertical-scroll-leaderboard{
+  margin-top: 6px;
+  scrollbar-width: none;
+  width:358px;
   justify-content: center;
   align-items: center;
 }
 .matchSlot {
   margin-bottom: 10px;
-  margin-left: 12px;
+  margin-left: 8px;
   color: dimgrey;
   flex: 0 0 80vw;
   display: grid;
@@ -273,4 +280,10 @@ button:focus, input:focus, select:focus, textarea:focus {
 .createLeagueButton.active{
   background-color: #FFCC00;
   color:#1F2F79;
+}
+.leaderboardSlot{
+  height: 40px;
+  border-top: 1px dashed #FFFFFF33;
+  display: flex;
+  align-items: center;
 }

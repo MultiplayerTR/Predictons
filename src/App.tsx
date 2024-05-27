@@ -8,6 +8,7 @@ import StorePage from "./StorePage";
 import ProfilePage from "./ProfilePage";
 import LeaguesPage from "./LeaguesPage";
 import CreateLeague from "./CreateLeague";
+import LeaderboardPage from "./LeaderboardPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/profile" element={<ProfilePage/>}></Route>
                 <Route path="/leagues" element={<LeaguesPage/>}></Route>
                 <Route path="/leagues/create" element={<CreateLeague/>}></Route>
+                <Route path="/leagues/test" element={<LeaderboardPage/>}></Route>
             </Routes>
 
         <NavBar></NavBar>

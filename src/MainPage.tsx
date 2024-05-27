@@ -159,8 +159,11 @@ const MainPage = () => {
                     fontSize:15
                 }}>GROUP STAGE - MD 1</h2>
             </div>
-            <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 39}
-                                                  itemsList={activeScroll}></ScrollContainerVerticalForMatchSlots>
+            <div style={{
+                display: "flex",
+            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 39}
+                                                     itemsList={activeScroll}></ScrollContainerVerticalForMatchSlots></div>
+
         </div>
     );
 };

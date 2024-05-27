@@ -21,7 +21,7 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
         //takım bayrakları eklenicek
         <>
             <div
-                className="vertical-scroll-profile"
+                className="vertical-scroll-container"
                 ref={scrollViewRef}
                 style={{userSelect: 'none', height: height, overflowY: 'auto'}}
             >
