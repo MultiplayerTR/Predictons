@@ -5,8 +5,11 @@ let buttonClassName:string = "createLeagueButton"
 
 const CreateLeague = () => {
 
-    const [isSettingsDone, setIsSettingsDone] = useState(true);
-    const [inputValue, setInputValue] = useState<string>('');
+    const [isSettingsDone, setIsSettingsDone] = useState(false);
+    const [reward, setReward] = useState<string>('');
+    const [classname1, setClassname1] = React.useState('categoryItems active');
+    const [classname2, setClassname2] = React.useState('categoryItems');
+    const [chosenLeague, setChosenLeague] = React.useState('Euro2024');
 
     const buttons = Array.from({ length: 6 }, (_, index) => ({
         id:index,
@@ -14,7 +17,7 @@ const CreateLeague = () => {
     }));
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value);
+        setReward(event.target.value);
     };
 
     const InvitePanelOpen = () => {
@@ -24,6 +27,24 @@ const CreateLeague = () => {
     const CreateLeague = () => {
         console.log("League created");
     }
+
+    const handleActivateEuro = () => {
+        setClassname1("categoryItems active")
+        setClassname2("categoryItems")
+        setChosenLeague("Euro2024")
+    }
+    const handleActivateCopa = () => {
+        setClassname1("categoryItems")
+        setClassname2("categoryItems active")
+        setChosenLeague("Copa America")
+    }
+
+    useEffect(() => {
+        if (chosenLeague !== null)
+            setIsSettingsDone(true)
+        else
+            setIsSettingsDone(false);
+    }, [chosenLeague]);
 
     useEffect(() => {
         if (isSettingsDone)
@@ -74,11 +95,11 @@ const CreateLeague = () => {
                 <div className={"buttonContainer"} style={{
                     marginTop: 8
                 }}>
-                    <button className={"categoryItems"}>
+                    <button onClick={handleActivateEuro} className={classname1}>
                         <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>
                         Euro 2024
                     </button>
-                    <button className={"categoryItems"}>
+                    <button onClick={handleActivateCopa} className={classname2}>
                         <img src={require("./Images/CopaAmerica.png")} alt={"Euro2024 icon"}></img>Copa America
                     </button>
                 </div>
@@ -126,7 +147,7 @@ const CreateLeague = () => {
                 </text>
                 <input
                     type="text"
-                    value={inputValue}
+                    value={reward}
                     onChange={handleInputChange}
                     placeholder="We recommend choosing a fun reward. 🤪"
                     style={{

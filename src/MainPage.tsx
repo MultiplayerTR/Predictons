@@ -21,12 +21,18 @@ let matchesCopa = [
 const MainPage = () => {
 
     const [activeScroll, setActiveScroll] = React.useState(matchesEuro);
+    const [classname1, setClassname1] = React.useState('categoryItems active');
+    const [classname2, setClassname2] = React.useState('categoryItems');
 
     const handleActivateEuro = () => {
         setActiveScroll(matchesEuro)
+        setClassname1("categoryItems active")
+        setClassname2("categoryItems")
     }
     const handleActivateCopa = () => {
         setActiveScroll(matchesCopa)
+        setClassname1("categoryItems")
+        setClassname2("categoryItems active")
     }
 
     return (
@@ -136,11 +142,11 @@ const MainPage = () => {
             </div>
             <ScrollContainerHorizontal></ScrollContainerHorizontal>
             <div className={"buttonContainer"}>
-                <button onClick={handleActivateEuro} className={"categoryItems"}>
+                <button onClick={handleActivateEuro} className={classname1} >
                     <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>
                     Euro 2024
                 </button>
-                <button onClick={handleActivateCopa} className={"categoryItems"}>
+                <button onClick={handleActivateCopa} className={classname2}>
                     <img src={require("./Images/CopaAmerica.png")} alt={"Copa America icon"}></img>Copa America
                 </button>
             </div>

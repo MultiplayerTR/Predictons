@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
 import {NavLink} from "react-router-dom";
+import MatchSlot from "./MatchSlot";
 
 const LeaguesPage = () => {
 
-    const [leagues, setLeagues] = React.useState([]);
+    const [leagues, setLeagues] = React.useState(["Test League"]);
     const [enableLeagues, setEnableLeagues] = React.useState(false);
 
     useEffect(() => {
@@ -42,10 +43,19 @@ const LeaguesPage = () => {
                     color:"darkgrey"
                 }}> You haven't joined any league</text>
             </div>}
+            {enableLeagues && <div>
+                {leagues.map((item, index) => (
+                    <div key={index}>
+                        <button className={"createLeagueButton"} style={{
+                            color:"white"
+                        }}>{item}</button>
+                    </div>
+                ))}
+            </div>}
             <div style={{
-                display:"flex",
-                justifyContent:"center",
-                alignItems:"center"
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center"
             }}>
                 <NavLink to={"/leagues/create"} className={"createLeagueButton active"}>Create a league</NavLink>
             </div>

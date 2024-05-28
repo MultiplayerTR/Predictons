@@ -129,7 +129,12 @@ button:focus, input:focus, select:focus, textarea:focus {
   border: none;
   background-size: cover;
   background-position: center;
+  background-color: rgb(0,0,0,0.3);
   text-decoration: none;
+  color: white;
+}
+.categoryItems.active{
+  background: #FFFFFF;
   color: #1F2F79;
 }
 .scroll-container-horizontal {
