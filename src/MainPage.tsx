@@ -4,7 +4,7 @@ import ScrollContainerHorizontal from "./ScrollContainerHorizontal";
 
 let matchesEuro = [
     ['France','England'],
-    ['Sweden','Belgium'],
+    ['Sweden','Belgium',"1","0"],
     ['Albania','Denmark'],
     ['Turkey','Portuguese'],
     ['Poland','Ukraine'],
@@ -12,9 +12,9 @@ let matchesEuro = [
 ];
 
 let matchesCopa = [
-    ['Argentina','Brazil'],
+    ['Argentina','Brazil',"0","2"],
     ['Bolivia','Canada'],
-    ['Jamaica','Mexico'],
+    ['Jamaica','Mexico',"3","1"],
     ['Peru','Uruguay']
 ];
 
@@ -141,7 +141,7 @@ const MainPage = () => {
                     Euro 2024
                 </button>
                 <button onClick={handleActivateCopa} className={"categoryItems"}>
-                    <img src={require("./Images/CopaAmerica.png")} alt={"Euro2024 icon"}></img>Copa America
+                    <img src={require("./Images/CopaAmerica.png")} alt={"Copa America icon"}></img>Copa America
                 </button>
             </div>
             <div style={{

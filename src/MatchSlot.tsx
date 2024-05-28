@@ -1,17 +1,41 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import HorizontalNumberSlider from "./HorizontalNumberSlider";
 
 interface teams  {
     team1:string;
     team2:string;
+    score1: number;
+    score2: number;
 }
 
-const MatchSlot: React.FC<teams>= ({team1,team2}) => {
+const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
 
     const [activateScoreSelection, setActivateScoreSelection] = useState<boolean>(false);
     const [scoreForTeam1, setScoreForTeam1] = useState<number>();
     const [scoreForTeam2, setScoreForTeam2] = useState<number>();
     const [height, setHeight] = useState<number>(160);
+    const [predictEnable, setPredictEnable] = useState<boolean>(false);
+    const [predictLockable , setPredictLockable] = useState<boolean>(false);
+    const [matchLive, setMatchLive] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (!isNaN(score1) && !isNaN(score2)) {
+            setScoreForTeam1(score1)
+            setScoreForTeam2(score2)
+            setPredictEnable(true)
+        }
+        else
+            setPredictEnable(false)
+    }, [score1,score2]);
+
+    useEffect(() => {
+        if (scoreForTeam1 !== undefined && scoreForTeam2 !== undefined){
+            setPredictLockable(true);
+        }
+        else
+            setPredictLockable(false)
+    }, [scoreForTeam1, scoreForTeam2]);
+
 
     const handleSelectTeam1 = (number: number) => {
         setScoreForTeam1(number)
@@ -25,7 +49,15 @@ const MatchSlot: React.FC<teams>= ({team1,team2}) => {
         if (!activateScoreSelection)
             setHeight(226)
         else
+        {
+            setScoreForTeam1(undefined)
+            setScoreForTeam2(undefined)
             setHeight(160)
+        }
+    }
+    
+    const handleSavePrediction = () =>{
+        console.log("hi")
     }
 
     return (
@@ -58,16 +90,20 @@ const MatchSlot: React.FC<teams>= ({team1,team2}) => {
                     fontSize: "12px",
                 }}>GROUP A
                 </h6>
-                <h6 style={{
+                {!matchLive && <h6 style={{
                     color: "white",
                     marginTop:16
-                }}>V</h6>
-                <h6 style={{
+                }}>V</h6>}
+                {matchLive && <h6 style={{
+                    color: "white",
+                    marginTop:16
+                }}>{scoreForTeam1}-{scoreForTeam2}</h6>}
+                {!matchLive && <h6 style={{
                     color: "grey",
                     fontSize: "12px",
                 }}>19:00
-                </h6>
-                <div>
+                </h6>}
+                {!predictEnable && <div>
                     {!activateScoreSelection && <button onClick={handleScoreSetterActivation} style={{
                         width: "80px",
                         height: "20px",
@@ -78,8 +114,14 @@ const MatchSlot: React.FC<teams>= ({team1,team2}) => {
                         color: "#FFCC00"
                     }}>Predict Now
                     </button>}
-                </div>
-
+                </div>}
+                {predictEnable && <h4 style={{
+                    color: "#FFCC00",
+                    gridArea: "second-column-down",
+                    marginTop: "20px",
+                    fontSize: "12px"
+                }
+                }>Your prediction: {scoreForTeam1}-{scoreForTeam2}</h4>}
             </div>
             <div>
                 <div style={{
@@ -109,12 +151,12 @@ const MatchSlot: React.FC<teams>= ({team1,team2}) => {
                     color:"white",
                     fontSize:"12px"
                 }}>Cancel</button>
-                <button className={"categoryItems"} style={{
+                <button onClick={handleSavePrediction} disabled={!predictLockable} className={"categoryItems"} style={{
                     width: 160,
                     backgroundColor: "#FFCC00",
                     color: "#1F2F79",
                     fontSize:"12px"
-                }}>Predict Now</button>
+                }}>{predictLockable && "Predict Now"} {!predictLockable && "Make prediction"}</button>
             </div>}
         </div>
     );

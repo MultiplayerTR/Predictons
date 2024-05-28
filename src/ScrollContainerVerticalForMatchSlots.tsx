@@ -28,7 +28,7 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
                 <div>
                     {itemsList.map((item, index) => (
                         <div key={index}>
-                            <MatchSlot team1={item[0]} team2={item[1]} ></MatchSlot>
+                            <MatchSlot team1={item[0]} team2={item[1]} score1={parseInt(item[2])} score2={parseInt(item[3])}></MatchSlot>
                         </div>
                     ))}
                 </div>

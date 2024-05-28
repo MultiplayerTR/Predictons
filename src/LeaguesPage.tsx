@@ -48,7 +48,6 @@ const LeaguesPage = () => {
                 alignItems:"center"
             }}>
                 <NavLink to={"/leagues/create"} className={"createLeagueButton active"}>Create a league</NavLink>
-                <NavLink to={"/leagues/test"} className={"createLeagueButton"} >Create a league</NavLink>
             </div>
 
         </div>
