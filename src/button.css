@@ -1,0 +1,107 @@
+.subInfo{
+    color: darkgrey;
+    font-size: 12px
+}
+.navbarButtons{
+    width: 80px;
+    background-repeat: no-repeat;
+    background-position: top;
+    background-size: 30px;
+    color: grey;
+    border-radius: 8px;
+}
+.navbarButtons.active {
+    color: #FFCC00;
+}
+.backButton{
+    align-self: center;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    background-image: url("/src/Images/BackButton.png");
+}
+.categoryItems{
+    width: 175px;
+    height: 36px;
+    scroll-snap-align: start;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    background-size: cover;
+    background-position: center;
+    background-color: rgb(0,0,0,0.3);
+    text-decoration: none;
+    color: white;
+}
+.categoryItems.active{
+    background: #FFFFFF;
+    color: #1F2F79;
+}
+.durationButton{
+    width: 120px;
+    height: 24px;
+    color: darkgray;
+    background: none;
+    border: none;
+}
+.durationButton.active{
+    border-bottom: 1px solid #FFCC00;
+    color: #FFCC00;
+}
+.inviteUserButton{
+    width: 114px;
+    height: 114px;
+    background-color: transparent;
+    background-image: url("/src/Images/InviteUser.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    border:1px dashed grey;
+}
+.createLeagueButton{
+    display:flex;
+    width:358px;
+    height:48px;
+    margin-top:24px;
+    border-radius:4px;
+    border:none;
+    background-color: #FFFFFF33;
+    color:darkgray;
+    font-weight:bold;
+    font-size:18px;
+    text-decoration:none;
+    justify-content:center;
+    align-items:center;
+}
+.createLeagueButton.active{
+    background-color: #FFCC00;
+    color:#1F2F79;
+}
+.joinedLeagueButton{
+    display:flex;
+    justify-self: start;
+    width: 100vw;
+    height:48px;
+    position: fixed;
+    left: 0;
+    bottom: 70px;
+    background: rgb(0,0,0,0.3);
+    text-align:left;
+    text-decoration:none;
+    padding-left:16px;
+    padding-top:4px
+}
+.predictNowButton{
+    width: 80px;
+    height: 20px;
+    grid-area: second-column-down;
+    margin-top: 20px;
+    background: transparent;
+    border: none;
+    color: #FFCC00;
+}

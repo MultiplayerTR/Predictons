@@ -37,9 +37,7 @@ const MainPage = () => {
 
     return (
         <div className={"mainPageItemContainer"}>
-            <div className={"mostPopularMatchContainer"} style={{
-                border: "1px solid #FFCC00",
-            }}>
+            <div className={"mostPopularMatchContainer"}>
                 <div className={"mostPopularMatch"}>
                     <div style={{
                         display: "grid",
@@ -111,13 +109,9 @@ const MainPage = () => {
                         color: "#FFCC00"
                     }}>..............................................................................................................
                     </div>
-                    <button style={{
-                        width: "80px",
-                        height: "20px",
+                    <button className={"predictNowButton"} style={{
+                        marginTop: 0,
                         paddingBottom: "30px",
-                        background: "transparent",
-                        border: "none",
-                        color: "#FFCC00"
                     }}>Predict Now
                     </button>
                 </div>
@@ -129,20 +123,38 @@ const MainPage = () => {
                 <h2 style={{
                     color: "#00FF1A",
                     alignSelf: "start",
-                    fontSize:15
+                    fontSize: 15
                 }}>LIVE MATCHES</h2>
                 <button style={{
                     alignSelf: "end",
                     color: "grey",
                     background: "transparent",
                     border: "none",
-                    fontWeight: "bold",
-                    fontSize:15
-                }}>see all</button>
+                    fontWeight: "normal",
+                    fontSize: 15
+                }}>see all
+                </button>
             </div>
             <ScrollContainerHorizontal></ScrollContainerHorizontal>
-            <div className={"buttonContainer"}>
-                <button onClick={handleActivateEuro} className={classname1} >
+            <div style={{
+                display: "flex",
+                gap: 80,
+            }}>
+                <h2 style={{
+                    color: "white",
+                    alignSelf: "start",
+                    fontSize: 15
+                }}>TODAY'S MATCHES</h2>
+                <h2 style={{
+                    alignSelf: "end",
+                    color: "white",
+                    fontSize: 15
+                }}>GROUP STAGE - MD 1</h2>
+            </div>
+            <div className={"buttonContainer"} style={{
+                marginTop :0
+            }}>
+                <button onClick={handleActivateEuro} className={classname1}>
                     <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>
                     Euro 2024
                 </button>
@@ -152,23 +164,9 @@ const MainPage = () => {
             </div>
             <div style={{
                 display: "flex",
-                gap: 80,
-            }}>
-                <h2 style={{
-                    color: "white",
-                    alignSelf: "start",
-                    fontSize:15
-                }}>TODAY'S MATCHES</h2>
-                <h2 style={{
-                    alignSelf: "end",
-                    color: "white",
-                    fontSize:15
-                }}>GROUP STAGE - MD 1</h2>
+            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 38}
+                                                     itemsList={activeScroll}></ScrollContainerVerticalForMatchSlots>
             </div>
-            <div style={{
-                display: "flex",
-            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 39}
-                                                     itemsList={activeScroll}></ScrollContainerVerticalForMatchSlots></div>
 
         </div>
     );

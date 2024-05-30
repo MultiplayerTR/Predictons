@@ -1,16 +1,17 @@
 import React from 'react';
 
 interface ListProps  {
+    placement: string
     username: string;
     predictAmount:string,
     correctPredictAmount:string,
     totalPoints:string
 }
 
-const LeaderboardSlot:React.FC<ListProps> = ({username,predictAmount,correctPredictAmount,totalPoints}) => {
+const LeaderboardSlot:React.FC<ListProps> = ({placement,username,predictAmount,correctPredictAmount,totalPoints}) => {
     return (
         <div className={"leaderboardSlot"}>
-            <text>1</text>
+            <text>{placement}</text>
             <img src={require("./Images/PP1.png")} alt={"profile pic"} style={{
                 marginLeft: 8,
             }}></img>

@@ -1,0 +1,30 @@
+.predictions-icon{
+    background-image: url("/src/Images/Predictions.png");
+}
+.predictions-icon.active{
+    background-image: url("/src/Images/PredictionsActive.png");
+}
+.matches-icon{
+    background-image: url("/src/Images/Matches.png");
+}
+.matches-icon.active{
+    background-image: url("/src/Images/MatchesActive.png");
+}
+.store-icon{
+    background-image: url("/src/Images/Store.png");
+}
+.store-icon.active{
+    background-image: url("/src/Images/StoreActive.png");
+}
+.profile-icon{
+    background-image: url("/src/Images/Profile.png");
+}
+.profile-icon.active{
+    background-image: url("/src/Images/ProfileActive.png");
+}
+.league-icon{
+    background-image: url("/src/Images/Leagues.png");
+}
+.league-icon.active{
+    background-image: url("/src/Images/LeaguesActive.png");
+}

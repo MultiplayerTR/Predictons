@@ -63,7 +63,7 @@ const CreateLeague = () => {
                     display:"flex",
                     gap: window.innerWidth/8,
                 }}>
-                    <NavLink to={"/leagues"} className={"backButton"}></NavLink>
+                    <NavLink to={"/leagues/joined"} className={"backButton"}></NavLink>
                     <h2>CREATE A LEAGUE</h2></div>
                 <text style={{
                     color: "darkgrey"
@@ -92,9 +92,7 @@ const CreateLeague = () => {
                     }}>Euro 2024 or Copa America? Choice is yours
                     </text>
                 </div>
-                <div className={"buttonContainer"} style={{
-                    marginTop: 8
-                }}>
+                <div className={"buttonContainer"}>
                     <button onClick={handleActivateEuro} className={classname1}>
                         <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>
                         Euro 2024

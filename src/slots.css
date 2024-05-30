@@ -1,0 +1,56 @@
+.mostPopularMatch{
+    color: dimgrey;
+    flex: 0 0 80vw;
+    height: 120px;
+    width: 358px;
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(3,100px);
+    grid-template-areas: "first-column"
+  "second-column-up" "second-column-down"
+  "third-column";
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    text-align: center;
+    border-radius: 8px;
+}
+.matchSlot {
+    margin-bottom: 10px;
+    margin-left: 8px;
+    color: dimgrey;
+    flex: 0 0 80vw;
+    display: grid;
+    width: 358px;
+    grid-template-rows: 1fr;
+    grid-template-columns: repeat(3,100px);
+    grid-template-areas: "first-column"
+  "second-column-up" "second-column-down"
+  "third-column";
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    text-align: center;
+    border-radius: 8px;
+    background-color: #1F2F79;
+}
+.liveMatchSlot{
+    width: 216px;
+    height: 60px;
+    scroll-snap-align: start;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    border-radius: 8px;
+    border: 1px solid black;
+    background: transparent;
+}
+.liveMatchSlot.live{
+    border: 1px solid #FFCC00;
+}
+.leaderboardSlot{
+    height: 40px;
+    border-top: 1px dashed #FFFFFF33;
+    display: flex;
+    align-items: center;
+}

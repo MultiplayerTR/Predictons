@@ -1,5 +1,4 @@
-import React, {useEffect, useRef} from 'react';
-import MatchSlot from "./MatchSlot";
+import React, { useRef} from 'react';
 import LeaderboardSlot from "./LeaderboardSlot";
 
 // @ts-ignore
@@ -10,10 +9,42 @@ interface ListProps  {
 
 const ScrollContainerVerticalForLeaderboard: React.FC<ListProps>= ({height,items}) => {
         const scrollViewRef = useRef<HTMLDivElement>(null);
-        console.log(items)
 
         return (
             <>
+                <div style={{
+                    display: "flex",
+                    marginTop: 18
+                }}>
+                    <text style={{
+                        color: "darkgrey"
+                    }}>#
+                    </text>
+                    <text style={{
+                        marginLeft: 4,
+                        color: "darkgrey"
+                    }}>PLAYER
+                    </text>
+                    <text style={{
+                        marginLeft: 195,
+                        width: 16,
+                        color: "darkgrey"
+                    }}>P
+                    </text>
+                    <text style={{
+                        marginLeft: 16,
+                        width: 16,
+                        color: "darkgrey"
+                    }}>C
+                    </text>
+                    <text style={{
+                        marginLeft: 16,
+                        width: 16,
+                        color: "darkgrey",
+                        justifySelf: "end"
+                    }}>PTS
+                    </text>
+                </div>
                 <div
                     className="vertical-scroll-leaderboard"
                     ref={scrollViewRef}
@@ -22,7 +53,9 @@ const ScrollContainerVerticalForLeaderboard: React.FC<ListProps>= ({height,items
                     <div>
                         {items.map((item, index) => (
                             <div key={index}>
-                                <LeaderboardSlot username={item[0]} predictAmount={item[1]} correctPredictAmount={item[2]} totalPoints={item[3]}></LeaderboardSlot>
+                                <LeaderboardSlot placement={(index + 1).toString()} username={item[0]}
+                                                 predictAmount={item[1]} correctPredictAmount={item[2]}
+                                                 totalPoints={item[3]}></LeaderboardSlot>
                             </div>
                         ))}
                     </div>

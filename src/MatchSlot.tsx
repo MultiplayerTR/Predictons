@@ -104,15 +104,7 @@ const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
                 }}>19:00
                 </h6>}
                 {!predictEnable && <div>
-                    {!activateScoreSelection && <button onClick={handleScoreSetterActivation} style={{
-                        width: "80px",
-                        height: "20px",
-                        gridArea: "second-column-down",
-                        marginTop: "20px",
-                        background: "transparent",
-                        border: "none",
-                        color: "#FFCC00"
-                    }}>Predict Now
+                    {!activateScoreSelection && <button onClick={handleScoreSetterActivation} className={"predictNowButton"}>Predict Now
                     </button>}
                 </div>}
                 {predictEnable && <h4 style={{
