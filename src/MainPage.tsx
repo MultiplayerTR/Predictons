@@ -63,28 +63,13 @@ const MainPage = () => {
                             marginBottom: "10px"
                         }}>MOST POPULAR
                         </h2>
-                        <h2 style={{
-                            color: "grey",
-                            fontSize: "12px",
-                        }}>GROUP STAGE - MD 1
-                        </h2>
-                        <h2 style={{
-                            color: "dimgrey",
-                            fontSize: "12px",
-                        }}>GROUP A
-                        </h2>
+                        <h2 className={"subInfo"}>GROUP STAGE - MD 1</h2>
+                        <h2 className={"subInfo"}>GROUP A</h2>
                         <h6 style={{
                             color: "white",
                             marginTop: 16
                         }}>V</h6>
-                        <h2 style={{
-                            color: "grey",
-                            fontSize: "12px",
-                        }}>19:00
-                        </h2>
-                        <div>
-                        </div>
-
+                        <h2 className={"subInfo"}>19:00</h2>
                     </div>
                     <div style={{
                         display: "grid",

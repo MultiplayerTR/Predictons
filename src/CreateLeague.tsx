@@ -81,16 +81,8 @@ const CreateLeague = () => {
                     display: "grid",
                     textAlign: "left",
                 }}>
-                    <text style={{
-                        fontSize: 15,
-                        fontWeight: "bold",
-                    }}>Choose the tournament
-                    </text>
-                    <text style={{
-                        color: "darkgrey",
-                        fontSize: 12
-                    }}>Euro 2024 or Copa America? Choice is yours
-                    </text>
+                    <text className={"headerText"}>Choose the tournament</text>
+                    <text className={"subInfo"}>Euro 2024 or Copa America? Choice is yours</text>
                 </div>
                 <div className={"buttonContainer"}>
                     <button onClick={handleActivateEuro} className={classname1}>
@@ -110,16 +102,8 @@ const CreateLeague = () => {
                     display: "grid",
                     textAlign: "left",
                 }}>
-                    <text style={{
-                        fontSize: 15,
-                        fontWeight: "bold",
-                    }}>Invite your friends
-                    </text>
-                    <text style={{
-                        color: "darkgrey",
-                        fontSize: 12
-                    }}>Invite your friends to compete.
-                    </text>
+                    <text className={"headerText"}>Invite your friends</text>
+                    <text className={"subInfo"}>Invite your friends to compete.</text>
                 </div>
             </div>
             <div className="inviteUserContainer">
@@ -133,28 +117,16 @@ const CreateLeague = () => {
                 textAlign: "left",
                 marginTop:24
             }}>
-                <text style={{
-                    fontSize: 15,
-                    fontWeight: "bold",
-                }}>Set a reward
-                </text>
-                <text style={{
-                    color: "darkgrey",
-                    fontSize: 12
-                }}>Determine the prize the winner of the tournament will receive.
-                </text>
+                <text className={"headerText"}>Set a reward</text>
+                <text className={"subInfo"}>Determine the prize the winner of the tournament will receive.</text>
                 <input
                     type="text"
                     value={reward}
                     onChange={handleInputChange}
                     placeholder="We recommend choosing a fun reward. 🤪"
+                    className={"rewardText"}
                     style={{
-                        paddingLeft:8,
-                        marginTop:8,
-                        height:36,
-                        backgroundColor: '#FFFFFF0D',
-                        borderRadius:4,
-                        border:"none",
+                        height:36
                 }}></input>
                 <button className={buttonClassName} disabled={!isSettingsDone} onClick={CreateLeague}>Create a league</button>
             </div>

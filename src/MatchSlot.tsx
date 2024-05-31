@@ -80,16 +80,8 @@ const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
                 {activateScoreSelection && <HorizontalNumberSlider min={0} max={10} onSelect={handleSelectTeam1}/>}
             </div>
             <div>
-                <h6 style={{
-                    color: "grey",
-                    fontSize: "12px",
-                }}>GROUP STAGE - MD 1
-                </h6>
-                <h6 style={{
-                    color: "dimgrey",
-                    fontSize: "12px",
-                }}>GROUP A
-                </h6>
+                <h6 className={"subInfo"}>GROUP STAGE - MD 1</h6>
+                <h6 className={"subInfo"}>GROUP A</h6>
                 {!matchLive && <h6 style={{
                     color: "white",
                     marginTop:16
@@ -98,11 +90,7 @@ const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
                     color: "white",
                     marginTop:16
                 }}>{scoreForTeam1}-{scoreForTeam2}</h6>}
-                {!matchLive && <h6 style={{
-                    color: "grey",
-                    fontSize: "12px",
-                }}>19:00
-                </h6>}
+                {!matchLive && <h6 className={"subInfo"}>19:00</h6>}
                 {!predictEnable && <div>
                     {!activateScoreSelection && <button onClick={handleScoreSetterActivation} className={"predictNowButton"}>Predict Now
                     </button>}

@@ -99,10 +99,10 @@ const JoinedLeaguesPage = () => {
                 </div>
             </div>}
             {openJoinedLeagues && <div style={{
-                marginTop:16,
+                marginTop: 16,
             }}>
                 <div style={{
-                    display:"flex"
+                    display: "flex"
                 }}>
                     <button onClick={() => setOpenJoinedLeague(false)} className={"backButton"}></button>
                     <div>
@@ -112,8 +112,18 @@ const JoinedLeaguesPage = () => {
                         <text className={"subInfo"}>Fun way to compete.</text>
                     </div>
                 </div>
-                <ScrollContainerVerticalForLeaderboard height={window.innerHeight / 100 * 38}
+                <ScrollContainerVerticalForLeaderboard height={window.innerHeight / 100 * 20}
                                                        items={openLeague.items}></ScrollContainerVerticalForLeaderboard>
+
+                <div style={{
+                    display: "grid",
+                    textAlign: "left",
+                    marginTop: 18
+                }}>
+                    <h4>Reward</h4>
+                    <text className={"subInfo"}>Which the winner will receive at the end of the tournament..</text>
+                    <text className={"rewardText"}>Loser pays beers</text>
+                </div>
             </div>}
         </div>
     );

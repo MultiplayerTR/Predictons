@@ -17,10 +17,7 @@ const PredictionPage = () => {
                 marginLeft:10,
             }}>
                 <h4 style={{}}>Predictions</h4>
-                <text style={{
-                    fontSize:12,
-                    color: "#AAAAAA",
-                }}>Prizes will be received at the end of the tournament.</text>
+                <text className={"subInfo"}>Prizes will be received at the end of the tournament.</text>
             </div>
             <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 90}
                                                   itemsList={matchesPredicted}></ScrollContainerVerticalForMatchSlots>

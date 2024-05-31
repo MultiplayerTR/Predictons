@@ -89,19 +89,8 @@ const LeaderboardPage = () => {
                 marginTop: 18
             }}>
                 <h4>Reward</h4>
-                <text className={"subInfo"}>Which the winner will receive at the end of the tournament..
-                </text>
-                <text
-                    style={{
-                        paddingLeft: 8,
-                        marginTop: 8,
-                        paddingTop:8,
-                        height: 28,
-                        backgroundColor: '#FFFFFF0D',
-                        borderRadius: 4,
-                        border: "none",
-                        textAlign:"left",
-                    }}>1 TON</text>
+                <text className={"subInfo"}>Which the winner will receive at the end of the tournament..</text>
+                <text className={"rewardText"}>1 TON</text>
             </div>
             <NavLink to={"/leagues/joined"} className={"joinedLeagueButton"}>
                 <div>
