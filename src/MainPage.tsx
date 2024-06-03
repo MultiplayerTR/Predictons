@@ -38,7 +38,7 @@ const MainPage = () => {
     return (
         <div className={"mainPageItemContainer"}>
             <div className={"mostPopularMatchContainer"}>
-                <div className={"mostPopularMatch"}>
+                <div className={"matchSlot mostPopularMatch"}>
                     <div style={{
                         display: "grid",
                         alignItems: "center",
@@ -63,7 +63,7 @@ const MainPage = () => {
                             marginBottom: "10px"
                         }}>MOST POPULAR
                         </h2>
-                        <h2 className={"subInfo"}>GROUP STAGE - MD 1</h2>
+                        <h2 className={"subInfo"}>GROUP STAGE MD 1</h2>
                         <h2 className={"subInfo"}>GROUP A</h2>
                         <h6 style={{
                             color: "white",

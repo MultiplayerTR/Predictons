@@ -1,6 +1,6 @@
 .subInfo{
     color: darkgrey;
-    font-size: 12px
+    font-size: 12px;
 }
 .navbarButtons{
     width: 80px;
@@ -100,7 +100,8 @@
     width: 80px;
     height: 20px;
     grid-area: second-column-down;
-    margin-top: 20px;
+    margin-top: 32px;
+    font-size: 12px;
     background: transparent;
     border: none;
     color: #FFCC00;
