@@ -56,9 +56,7 @@ const LeaderboardPage = () => {
 
     return (
         <div>
-            <h2 style={{
-                marginTop:16
-            }}>TOURNAMENT LEADERBOARD</h2>
+            <h1 className={"bigHeader"}>TOURNAMENT LEADERBOARD</h1>
             <text className={"subInfo"}>Make the correct predictions and compete with other players</text>
             <div className={"buttonContainer"}>
                 <button onClick={handleActivateEuro} className={classname1}>
@@ -94,7 +92,7 @@ const LeaderboardPage = () => {
             </div>
             <NavLink to={"/leagues/joined"} className={"joinedLeagueButton"}>
                 <div>
-                    <h4>Leagues you joined</h4>
+                    <h4 className={"headerText"}>Leagues you joined</h4>
                     <text className={"subInfo"}>Prizes wil be received at the end of tournaments</text>
                 </div>
                 <div style={{

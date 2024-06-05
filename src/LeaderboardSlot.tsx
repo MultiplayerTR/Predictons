@@ -17,7 +17,8 @@ const LeaderboardSlot:React.FC<ListProps> = ({placement,username,predictAmount,c
             }}></img>
             <text style={{
                 width: 244,
-                textAlign: "start"
+                textAlign: "start",
+                marginLeft: 8,
             }}>{username}
             </text>
             <text style={{

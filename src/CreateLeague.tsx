@@ -57,14 +57,13 @@ const CreateLeague = () => {
         <div>
             <div style={{
                 display: 'grid',
-                marginTop: 16,
             }}>
                 <div style={{
                     display:"flex",
                     gap: window.innerWidth/8,
                 }}>
                     <NavLink to={"/leagues/joined"} className={"backButton"}></NavLink>
-                    <h2>CREATE A LEAGUE</h2></div>
+                    <h2 className={"bigHeader"} >CREATE A LEAGUE</h2></div>
                 <text style={{
                     color: "darkgrey"
                 }}>Create your league, compete with your

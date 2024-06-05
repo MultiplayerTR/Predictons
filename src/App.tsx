@@ -12,6 +12,7 @@ import LeaguesPage from "./LeaguesPage";
 import "./button.css";
 import "./slots.css";
 import "./image.css";
+import "./fonts.css"
 
 function App() {
   return (

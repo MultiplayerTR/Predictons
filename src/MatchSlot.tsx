@@ -10,17 +10,18 @@ interface teams  {
 
 const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
 
-    const [activateScoreSelection, setActivateScoreSelection] = useState<boolean>(false);
     const [scoreForTeam1, setScoreForTeam1] = useState<number>();
     const [predictForTeam1, setPredictionForTeam1] = useState<number>();
     const [scoreForTeam2, setScoreForTeam2] = useState<number>();
     const [predictForTeam2, setPredictionForTeam2] = useState<number>();
     const [height, setHeight] = useState<number>(160);
+    let [rePredictAmount, setRePredictAmount] = useState<number>(1);
+    const [activateScoreSelection, setActivateScoreSelection] = useState<boolean>(false);
+    const [rePredictable, setRePredictable] = useState<boolean>(true);
     const [predictEnable, setPredictEnable] = useState<boolean>(false);
     const [predictLockable , setPredictLockable] = useState<boolean>(false);
     const [matchLive, setMatchLive] = useState<boolean>(false);
-    let [rePredictAmount, setRePredictAmount] = useState<number>(1);
-    const [rePredictable, setRePredictable] = useState<boolean>(true);
+    const [matchDone, setMatchDone] = useState<boolean>(false);
 
     useEffect(() => {
         if (!isNaN(score1) && !isNaN(score2)) {
@@ -103,48 +104,60 @@ const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
             <div style={{
                 height: 140,
             }}>
-                <h6 className={"subInfo"}>GROUP STAGE MD 1</h6>
+                <h6 className={"subInfo"}>GROUP STAGE </h6>
+                <h6 className={"subInfo"}>MD 1</h6>
                 <h6 className={"subInfo"}>GROUP A</h6>
-                {!matchLive && <div>
-                    {predictEnable && <h6 className={"subInfo"} style={{
-                        marginTop:16
-                    }}>Your Prediction:</h6>}
-                    {!predictEnable && <h6 style={{
-                        color: "white",
-                        marginTop:16
-                    }}> V </h6>}
-                    {predictEnable && <h3> {scoreForTeam1 +" - " +scoreForTeam2}</h3>}
-                    {!matchLive && <h6 className={"subInfo"}>19:00</h6>}
+                {!matchDone && <div>
+                    {!matchLive && <div>
+                        {predictEnable && <h6 className={"subInfo"} style={{
+                            marginTop:16
+                        }}>Your Prediction:</h6>}
+                        {!predictEnable && <h6 style={{
+                            color: "white",
+                            marginTop:16
+                        }}> V </h6>}
+                        {predictEnable && <h3> {scoreForTeam1 +" - " +scoreForTeam2}</h3>}
+                        {!matchLive && <h6 className={"subInfo"}>19:00</h6>}
+                    </div>}
+                    {matchLive && <div style={{
+                        marginTop:10
+                    }}>
+                        <h3>0-0</h3>
+                        {predictEnable && <h6 style={{
+                            color: "#00FF1A",
+                            fontSize: "12px",
+                            marginTop:8
+                        }}>00:00</h6>}
+                        {predictEnable && <text className={"subInfo"} style={{
+                            bottom:0
+                        }}
+                        >Your Prediction: <text style={{
+                            color: "white",
+                            fontSize: "12px",
+                            fontWeight: "bold",
+                        }}>{scoreForTeam1 + " - " + scoreForTeam2}</text>
+                        </text>}
+                    </div>}
                 </div>}
-                {matchLive && <div style={{
-                    marginTop:10
-                }}>
+                {matchDone && <div>
                     <h3>0-0</h3>
-                    {predictEnable && <h6 style={{
-                        color: "#00FF1A",
-                        fontSize: "12px",
-                        marginTop:8
-                    }}>00:00</h6>}
-                    {predictEnable && <text className={"subInfo"} style={{
-                        bottom:0
-                    }}
-                    >Your Prediction: <text style={{
-                        color: "white",
-                        fontSize: "12px",
-                        fontWeight: "bold",
-                    }}>{scoreForTeam1 + " - " + scoreForTeam2}</text>
-                    </text>}
+                    <text className={"subInfo"}>Completed</text>
                 </div>}
-                {!predictEnable && <div>
-                    {!activateScoreSelection &&
-                        <button onClick={handleScoreSetterActivation} className={"predictNowButton"}>Predict Now
+                {!matchDone && <div>
+                    {!predictEnable && <div>
+                        {!activateScoreSelection &&
+                            <button onClick={handleScoreSetterActivation} className={"predictNowButton"}>Predict Now
+                            </button>}
+                    </div>}
+                    {predictEnable && rePredictable && !activateScoreSelection &&
+                        <button onClick={handleScoreSetterActivation} className={"predictNowButton"} style={{
+                            marginTop:0
+                        }}>Re-predict
                         </button>}
                 </div>}
-                {predictEnable && rePredictable && !activateScoreSelection &&
-                    <button onClick={handleScoreSetterActivation} className={"predictNowButton"} style={{
-                        marginTop:0
-                    }}>Re-predict
-                    </button>}
+                {matchDone &&
+                    <text className={"subInfo"}>Your prediction: {scoreForTeam1}-{scoreForTeam2}</text>
+                }
             </div>
             <div>
                 <div style={{

@@ -19,7 +19,11 @@ const PodiumSlot: React.FC<podiumSlotProps> = ({length,placement,username,points
                 height: length,
                 width: length
             }}></img>
-            <h5>{placement}.{username}</h5>
+            <h5 style={{
+                fontSize:15,
+                height:20,
+                marginTop:2
+            }}>{placement}.{username}</h5>
             <text className={"subInfo"}>{points} PTS</text>
         </div>
     );

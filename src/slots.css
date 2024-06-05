@@ -1,5 +1,5 @@
 .matchSlot {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     margin-left: 8px;
     color: dimgrey;
     flex: 0 0 80vw;
@@ -7,9 +7,6 @@
     width: 358px;
     grid-template-rows: 1fr;
     grid-template-columns: repeat(3,113px);
-    grid-template-areas: "first-column"
-  "second-column-up" "second-column-down"
-  "third-column";
     justify-content: center;
     align-items: center;
     font-size: 24px;
@@ -40,4 +37,27 @@
     border-top: 1px dashed #FFFFFF33;
     display: flex;
     align-items: center;
+}
+.membershipSlotItem{
+    background: #FFFFFF33;
+    display:grid;
+    align-items: center;
+    justify-content: left;
+    margin-top: 4px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    grid-template-columns: repeat(2,180px);
+    grid-template-rows: 1fr;
+    grid-template-areas:"first-column" "second-column";
+    border-radius: 4px;
+}
+.badgeSlots{
+    width:125px;
+    height:20px;
+    background: #FFFFFF1A;
+    margin-top:4px;
+    padding-top:4px;
+    border-radius:4px;
+    font-size:12px;
+    font-weight:normal;
 }

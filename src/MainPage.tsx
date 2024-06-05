@@ -37,6 +37,13 @@ const MainPage = () => {
 
     return (
         <div className={"mainPageItemContainer"}>
+            <div style={{
+                width:"90vw",
+                textAlign:"left"
+            }}>
+                <h4 className={"headerText"}>Hello</h4>
+                <h4 className={"subInfo"}>Did you make your predictions today?</h4>
+            </div>
             <div className={"mostPopularMatchContainer"}>
                 <div className={"matchSlot mostPopularMatch"}>
                     <div style={{
@@ -60,10 +67,12 @@ const MainPage = () => {
                             fontSize: "12px",
                             borderRadius: "5px",
                             backgroundColor: "#FFCC00",
-                            marginBottom: "10px"
+                            marginBottom: "10px",
+                            padding:"3px"
                         }}>MOST POPULAR
                         </h2>
-                        <h2 className={"subInfo"}>GROUP STAGE MD 1</h2>
+                        <h2 className={"subInfo"}>GROUP STAGE</h2>
+                        <h2 className={"subInfo"}>MD 1</h2>
                         <h2 className={"subInfo"}>GROUP A</h2>
                         <h6 style={{
                             color: "white",
@@ -92,11 +101,11 @@ const MainPage = () => {
                 }}>
                     <div style={{
                         color: "#FFCC00"
-                    }}>..............................................................................................................
+                    }}>........................................................................
                     </div>
                     <button className={"predictNowButton"} style={{
-                        marginTop: 0,
-                        paddingBottom: "30px",
+                        marginTop: "8px",
+                        marginBottom: "12px",
                     }}>Predict Now
                     </button>
                 </div>
@@ -123,7 +132,7 @@ const MainPage = () => {
             <ScrollContainerHorizontal></ScrollContainerHorizontal>
             <div style={{
                 display: "flex",
-                gap: 80,
+                gap: 60,
             }}>
                 <h2 style={{
                     color: "white",
@@ -137,7 +146,7 @@ const MainPage = () => {
                 }}>GROUP STAGE - MD 1</h2>
             </div>
             <div className={"buttonContainer"} style={{
-                marginTop :0
+                marginTop: 0
             }}>
                 <button onClick={handleActivateEuro} className={classname1}>
                     <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>
@@ -149,7 +158,7 @@ const MainPage = () => {
             </div>
             <div style={{
                 display: "flex",
-            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 38}
+            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 33}
                                                      itemsList={activeScroll}></ScrollContainerVerticalForMatchSlots>
             </div>
 

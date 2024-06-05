@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'MyFontHeader';
+    src: url("./SFPro/OpenType/SF-Pro-Display-Semibold.otf") format('otf');
+
+}
+body{
+    font-family: 'MyFontHeader', sans-serif;
+}

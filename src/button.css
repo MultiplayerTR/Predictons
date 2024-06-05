@@ -9,6 +9,8 @@
     background-size: 30px;
     color: grey;
     border-radius: 8px;
+    font-size: 10px;
+    font-weight: bold;
 }
 .navbarButtons.active {
     color: #FFCC00;
@@ -38,6 +40,7 @@
     background-color: rgb(0,0,0,0.3);
     text-decoration: none;
     color: white;
+    gap: 10px;
 }
 .categoryItems.active{
     background: #FFFFFF;
@@ -67,7 +70,7 @@
     display:flex;
     width:358px;
     height:48px;
-    margin-top:24px;
+    margin-top:8px;
     border-radius:4px;
     border:none;
     background-color: #FFFFFF33;
@@ -79,6 +82,7 @@
     align-items:center;
 }
 .createLeagueButton.active{
+    margin-top:24px;
     background-color: #FFCC00;
     color:#1F2F79;
 }
@@ -86,23 +90,64 @@
     display:flex;
     justify-self: start;
     width: 100vw;
-    height:48px;
+    height:44px;
     position: fixed;
     left: 0;
-    bottom: 70px;
+    bottom: 60px;
     background: rgb(0,0,0,0.3);
     text-align:left;
     text-decoration:none;
     padding-left:16px;
-    padding-top:4px
+    padding-top:8px
 }
 .predictNowButton{
     width: 80px;
-    height: 20px;
+    height: 16px;
     grid-area: second-column-down;
     margin-top: 32px;
     font-size: 12px;
     background: transparent;
     border: none;
     color: #FFCC00;
+}
+.membershipBadge {
+    background-image: url('/src/Images/EditBadge.png');
+    width: 44px;
+    height: 18px;
+    padding-top: 4px;
+    border: none;
+    border-radius: 5px;
+    color: grey;
+    cursor: pointer;
+    text-align: center;
+}
+.wallet-copy{
+    border: none;
+    margin-right: 5px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('/src/Images/Copy.png');
+    height: 12px;
+    width: 12px;
+}
+.number-item {
+    display: inline-block;
+    padding-top: 2px;
+    padding-right: 5px;
+    padding-left: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+    color: grey;
+    user-select: none;
+    font-size: 18px;
+}
+.number-item.selected {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    transform: scale(1.2);
+}
+.number-item:hover {
 }

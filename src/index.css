@@ -1,9 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 * {
   margin: 0;
   padding: 0;
-  font-family: "Quicksand", serif;
   color: white;
 }
 button:focus, input:focus, select:focus, textarea:focus {
@@ -11,18 +9,18 @@ button:focus, input:focus, select:focus, textarea:focus {
 }
 
 .mainPageItemContainer{
-  margin-top: 25px;
+  margin-top: 16px;
   position: fixed;
   display: grid;
   place-items: center;
   grid-template-columns: 1fr;
   grid-template-rows: auto auto auto;
   grid-template-areas: "first-row" "second-row" "third-row";
-  gap: 10px;
+  gap: 8px;
 }
 .mostPopularMatchContainer{
   display: grid;
-  place-items: center;
+  width: 358px;
   grid-template-rows: 1fr;
   grid-template-columns: auto auto;
   grid-template-areas: "first-column" "second-column";
@@ -109,24 +107,7 @@ button:focus, input:focus, select:focus, textarea:focus {
 .horizontal-number-slider::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
-.number-item {
-  display: inline-block;
-  padding: 0 5px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
-  text-align: center;
-  color: grey;
-  user-select: none;
-  font-size: 18px;
-}
-.number-item.selected {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  transform: scale(1.2);
-}
-.number-item:hover {
-}
+
 .inviteUserContainer{
   margin-top:8px;
   display: grid;
@@ -145,6 +126,54 @@ button:focus, input:focus, select:focus, textarea:focus {
   gap: 41px;
   margin-top: 10px;
 }
+.profileDetails{
+  position: fixed;
+  display: grid;
+  place-items: start;
+  grid-template-rows: auto auto auto;
+  grid-template-areas: "first-row-left first-row-right"
+    "second-row second-row"
+    "third-row third-row"
+    "forth-row forth-row";
+  top: 20px;
+  width: 375px;
+  margin-left: 16px;
+}
+.profile-detail-style{
+  display: flex;
+  justify-content: left;
+  height: 30px;
+  text-align: left;
+  font-size: 12px;
+}
+.profile-pic-big{
+  width: 98px;
+  height: 98px;
+  grid-area: first-row-left;
+  background-size: 98px;
+  background-color: #2F2F2F;
+  background-image: url('/src/Images/ProfilePic.png');
+  border-radius: 10px;
+}
+.wallet-address{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 254px;
+  height: 24px;
+  background-color: #FFFFFF33;
+  border-radius: 5px;
+}
+.rows-container {
+  height: 98px;
+  grid-area: first-row-right;
+}
+.profile-edit-verified{
+  display: grid;
+  justify-items: end;
+  width: 85px;
+  font-size: 12px;
+}
 .rewardText{
   padding-left: 8px;
   padding-top: 8px;
@@ -158,5 +187,21 @@ button:focus, input:focus, select:focus, textarea:focus {
 .headerText{
   font-size: 15px;
   font-weight: bold;
+}
+.headerText2{
+  text-align: left;
+  font-size: 12px;
+  margin-left: 12px;
+}
+.bigHeader{
+  font-size: 20px;
+  height: 24px;
+  font-weight: 600;
+  margin-top: 16px;
+}
+.slotTextLeft{
+  text-align: left;
+  font-size: 12px;
+  font-weight: normal;
 }
 
