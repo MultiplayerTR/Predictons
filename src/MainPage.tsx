@@ -1,36 +1,85 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import ScrollContainerHorizontal from "./ScrollContainerHorizontal";
+import {db} from "./config/firebase";
+import {getDocs,collection} from "firebase/firestore"
+import MatchOfTheDay from "./MatchOfTheDay";
 
-let matchesEuro = [
-    ['France','England'],
-    ['Sweden','Belgium',"1","0"],
-    ['Albania','Denmark'],
-    ['Turkey','Portuguese'],
-    ['Poland','Ukraine'],
-    ['Spain','Croatia']
-];
+type MatchData = {
+    id: string;
+    team1: string;
+    team2: string;
+    prediction1: string;
+    prediction2: string;
+    score1: number;
+    score2: number;
+    matchHour: string;
+};
 
-let matchesCopa = [
-    ['Argentina','Brazil',"0","2"],
-    ['Bolivia','Canada'],
-    ['Jamaica','Mexico',"3","1"],
-    ['Peru','Uruguay']
-];
+const MainPage:React.FC = () => {
 
-const MainPage = () => {
+    const euroMatchesRef = collection(db,"matchesEuro2024");
+    const copaMatchesRef = collection(db,"matchesCopaAmerica");
+    const matchOfTheDayRef = collection(db,"matchOfTheDay");
 
-    const [activeScroll, setActiveScroll] = React.useState(matchesEuro);
-    const [classname1, setClassname1] = React.useState('categoryItems active');
-    const [classname2, setClassname2] = React.useState('categoryItems');
+    const [euroMatches, setEuroMatches] = useState([] as any);
+    const [copaMatches, setCopaMatches] = useState([]as any);
+    const [matchOfTheDay, setMatchOfTheDay] = useState<MatchData | null>(null);
+
+    const [activeScroll, setActiveScroll] = useState([] as any);
+
+    const [classname1, setClassname1] = useState('categoryItems active');
+    const [classname2, setClassname2] = useState('categoryItems');
+
+    const getEuroMatches = async () => {
+        try {
+            const matchData = await getDocs(euroMatchesRef);
+            const simplifiedData = matchData.docs.map((doc) => ({...doc.data(),id:doc.id}));
+            setEuroMatches(simplifiedData);
+            setActiveScroll(simplifiedData);
+        }
+        catch (err){
+            console.log(err)
+        }
+    };
+
+    const getCopaMatches = async () => {
+        try {
+            const matchData = await getDocs(copaMatchesRef);
+            const simplifiedData = matchData.docs.map((doc) => ({...doc.data(),id:doc.id}));
+            setCopaMatches(simplifiedData);
+        }
+        catch (err){
+            console.log(err)
+        }
+    };
+    const getMatchOfTheDay = async () => {
+        try {
+            const matchData = await getDocs(matchOfTheDayRef);
+            const simplified = matchData.docs.map((doc) => ({...doc.data(),id:doc.id}))[0] as MatchData;
+            setMatchOfTheDay(simplified)
+            console.log(matchOfTheDay)
+        }
+        catch (err){
+            console.log(err)
+        }
+    };
+
+    useEffect(() => {
+        getEuroMatches();
+
+        getCopaMatches();
+
+        getMatchOfTheDay();
+    }, []);
 
     const handleActivateEuro = () => {
-        setActiveScroll(matchesEuro)
+        setActiveScroll(euroMatches)
         setClassname1("categoryItems active")
         setClassname2("categoryItems")
     }
     const handleActivateCopa = () => {
-        setActiveScroll(matchesCopa)
+        setActiveScroll(copaMatches)
         setClassname1("categoryItems")
         setClassname2("categoryItems active")
     }
@@ -38,78 +87,18 @@ const MainPage = () => {
     return (
         <div className={"mainPageItemContainer"}>
             <div style={{
-                width:"90vw",
+                width:"358px",
                 textAlign:"left"
             }}>
                 <h4 className={"headerText"}>Hello</h4>
                 <h4 className={"subInfo"}>Did you make your predictions today?</h4>
             </div>
-            <div className={"mostPopularMatchContainer"}>
-                <div className={"matchSlot mostPopularMatch"}>
-                    <div style={{
-                        display: "grid",
-                        alignItems: "center",
-                        justifyItems: "center",
-                        gap: "10px",
-                    }}>
-                        <img src={require("./Images/GER.png")} alt={"German flag"} style={{
-                            paddingTop: "40px"
-                        }}></img>
-                        <text style={{
-                            color: "white",
-                            fontSize: "18px"
-                        }}>Germany
-                        </text>
-                    </div>
-                    <div>
-                        <h2 style={{
-                            color: "black",
-                            fontSize: "12px",
-                            borderRadius: "5px",
-                            backgroundColor: "#FFCC00",
-                            marginBottom: "10px",
-                            padding:"3px"
-                        }}>MOST POPULAR
-                        </h2>
-                        <h2 className={"subInfo"}>GROUP STAGE</h2>
-                        <h2 className={"subInfo"}>MD 1</h2>
-                        <h2 className={"subInfo"}>GROUP A</h2>
-                        <h6 style={{
-                            color: "white",
-                            marginTop: 16
-                        }}>V</h6>
-                        <h2 className={"subInfo"}>19:00</h2>
-                    </div>
-                    <div style={{
-                        display: "grid",
-                        alignItems: "center",
-                        justifyItems: "center",
-                        gap: "10px",
-                    }}>
-                        <img src={require("./Images/SCO.png")} alt={"Scotland flag"} style={{
-                            paddingTop: "40px"
-                        }}></img>
-                        <text style={{
-                            color: "white",
-                            fontSize: "18px"
-                        }}>Scotland
-                        </text>
-                    </div>
-                </div>
-                <div style={{
-                    gridArea: "second-column",
-                }}>
-                    <div style={{
-                        color: "#FFCC00"
-                    }}>........................................................................
-                    </div>
-                    <button className={"predictNowButton"} style={{
-                        marginTop: "8px",
-                        marginBottom: "12px",
-                    }}>Predict Now
-                    </button>
-                </div>
-            </div>
+            {matchOfTheDay ?(
+                <MatchOfTheDay
+                    //@ts-ignore
+                    team1={matchOfTheDay.team1} team2={matchOfTheDay.team2} prediction1={matchOfTheDay.prediction1} prediction2={matchOfTheDay.prediction1} score1={matchOfTheDay.score1} score2={matchOfTheDay.score2} matchTime={matchOfTheDay.matchHour}></MatchOfTheDay>
+
+            ):""}
             <div style={{
                 display: "flex",
                 gap: 205,

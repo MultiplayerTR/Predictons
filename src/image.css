@@ -28,3 +28,10 @@
 .league-icon.active{
     background-image: url("/src/Images/LeaguesActive.png");
 }
+.circle-flag {
+    width: 50px;  /* Adjust the size as needed */
+    height: 50px; /* Adjust the size as needed */
+    border-radius: 50%;
+    object-fit: cover;
+    display: inline-block;
+}

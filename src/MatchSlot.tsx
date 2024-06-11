@@ -1,37 +1,86 @@
 import React, {useEffect, useState} from 'react';
 import HorizontalNumberSlider from "./HorizontalNumberSlider";
+import { Timestamp } from 'firebase/firestore';
+import Flag from 'react-world-flags';
 
 interface teams  {
     team1:string;
     team2:string;
-    score1: number;
-    score2: number;
+    prediction1: string;
+    prediction2: string;
+    score1:string;
+    score2: string;
+    matchTime:Timestamp;
 }
 
-const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
+const countryCodes: { [key: string]: string } = {
+    'Albania': 'ALB',
+    'Austria': 'AT',
+    'Belgium': 'BE',
+    'Croatia': 'HR',
+    'Czech Republic': 'CZ',
+    'Denmark': 'DK',
+    'England': 'GB',
+    'France': 'FR',
+    'Georgia':'GE',
+    'Germany': 'DE',
+    'Hungary': 'HU',
+    'Italy': 'IT',
+    'Netherlands': 'NL',
+    'Poland': 'PL',
+    'Portugal': 'PT',
+    'Romania': 'ROU',
+    'Scotland': 'GB-SCT',
+    'Serbia': 'SRB',
+    'Slovenia':'SI',
+    'Slovakia':'SVK',
+    'Spain': 'ES',
+    'Switzerland': 'CH',
+    'Turkey': 'TR',
+    'Ukraine': 'UA',
+    'Wales': 'GB-WLS',
+    'Argentina': 'AR',
+    'Bolivia': 'BO',
+    'Brazil': 'BR',
+    'Canada': 'CAN',
+    'Chile': 'CL',
+    'Colombia': 'CO',
+    'Costa Rica': 'CRC',
+    'Ecuador': 'EC',
+    'United States': 'EUA',
+    'Jamaica': 'JAM',
+    'Mexico': 'MEX',
+    'Panama': 'COL',
+    'Paraguay': 'PY',
+    'Peru': 'PE',
+    'Uruguay': 'UY',
+    'Venezuela': 'VE'
+};
 
-    const [scoreForTeam1, setScoreForTeam1] = useState<number>();
-    const [predictForTeam1, setPredictionForTeam1] = useState<number>();
-    const [scoreForTeam2, setScoreForTeam2] = useState<number>();
-    const [predictForTeam2, setPredictionForTeam2] = useState<number>();
+const MatchSlot: React.FC<teams>= ({team1,team2,prediction1,prediction2, score1,score2,matchTime}) => {
+
+    const [scoreForTeam1, setScoreForTeam1] = useState<string>();
+    const [predictForTeam1, setPredictionForTeam1] = useState<string>();
+    const [scoreForTeam2, setScoreForTeam2] = useState<string>();
+    const [predictForTeam2, setPredictionForTeam2] = useState<string>();
     const [height, setHeight] = useState<number>(160);
-    let [rePredictAmount, setRePredictAmount] = useState<number>(1);
+    let [rePredictAmount, setRePredictAmount] = useState<number>(0);
     const [activateScoreSelection, setActivateScoreSelection] = useState<boolean>(false);
-    const [rePredictable, setRePredictable] = useState<boolean>(true);
+    const [rePredictable, setRePredictable] = useState<boolean>(false);
     const [predictEnable, setPredictEnable] = useState<boolean>(false);
     const [predictLockable , setPredictLockable] = useState<boolean>(false);
     const [matchLive, setMatchLive] = useState<boolean>(false);
     const [matchDone, setMatchDone] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!isNaN(score1) && !isNaN(score2)) {
-            setScoreForTeam1(score1)
-            setScoreForTeam2(score2)
+        if (prediction1 !== "" && prediction2 !== "") {
+            setScoreForTeam1(prediction1)
+            setScoreForTeam2(prediction2)
             setPredictEnable(true)
         }
         else
             setPredictEnable(false)
-    }, [score1,score2]);
+    }, [prediction1,prediction2]);
 
     useEffect(() => {
         if (predictForTeam1 !== undefined && predictForTeam2 !== undefined){
@@ -47,10 +96,10 @@ const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
 
 
     const handleSelectTeam1 = (number: number) => {
-        setPredictionForTeam1(number)
+        setPredictionForTeam1(number.toString())
     };
     const handleSelectTeam2 = (number: number) => {
-        setPredictionForTeam2(number)
+        setPredictionForTeam2(number.toString())
     };
 
     const handleScoreSetterActivation = () => {
@@ -92,7 +141,7 @@ const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
                     justifyItems: "center",
                     gap: "10px",
                 }}>
-                    <img src={require("./Images/GER.png")} alt={"German flag"}></img>
+                    <Flag code={countryCodes[team1]} className={"circle-flag"}></Flag>
                     <text style={{
                         color: "white",
                         fontSize: "18px",
@@ -117,12 +166,12 @@ const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
                             marginTop:16
                         }}> V </h6>}
                         {predictEnable && <h3> {scoreForTeam1 +" - " +scoreForTeam2}</h3>}
-                        {!matchLive && <h6 className={"subInfo"}>19:00</h6>}
+                        {!matchLive && <h6 className={"subInfo"}>{matchTime ? matchTime.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }):""}</h6>}
                     </div>}
                     {matchLive && <div style={{
                         marginTop:10
                     }}>
-                        <h3>0-0</h3>
+                        <h3>{score1}-{score2}</h3>
                         {predictEnable && <h6 style={{
                             color: "#00FF1A",
                             fontSize: "12px",
@@ -156,7 +205,7 @@ const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
                         </button>}
                 </div>}
                 {matchDone &&
-                    <text className={"subInfo"}>Your prediction: {scoreForTeam1}-{scoreForTeam2}</text>
+                    <text className={"subInfo"}>Your prediction: {prediction1}-{prediction2}</text>
                 }
             </div>
             <div>
@@ -166,7 +215,7 @@ const MatchSlot: React.FC<teams>= ({team1,team2,score1,score2}) => {
                     justifyItems: "center",
                     gap: "10px",
                 }}>
-                    <img src={require("./Images/GER.png")} alt={"German flag"}></img>
+                    <Flag code={countryCodes[team2]} className={"circle-flag"}></Flag>
                     <text style={{
                         color: "white",
                         fontSize: "18px",
