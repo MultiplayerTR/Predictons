@@ -26,7 +26,6 @@ app.post(`/webhook/${TELEGRAM_TOKEN}`, async (req, res) => {
         const userName = message.from.username;
 
         if (message.text === '/start') {
-            // Send welcome message
             await sendMessage(chatId, `Welcome, ${userName}!.`);
 
             const userRef = db.collection('users').doc(userId.toString());

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import ScrollContainerHorizontal from "./ScrollContainerHorizontal";
-import {auth, db, telegramUserId} from "./config/firebase";
+import {auth, copaMatchesRef, db, euroMatchesRef, telegramUserId} from "./config/firebase";
 import {getDocs, collection, doc,getDoc} from "firebase/firestore"
 import MatchOfTheDay from "./MatchOfTheDay";
 
@@ -16,16 +16,15 @@ type MatchData = {
 
 const MainPage:React.FC = () => {
 
-    const euroMatchesRef = collection(db,"matchesEuro2024");
-    const copaMatchesRef = collection(db,"matchesCopaAmerica");
     const matchOfTheDayRef = collection(db,"matchOfTheDay");
 
     const [euroMatches, setEuroMatches] = useState([] as any);
     const [copaMatches, setCopaMatches] = useState([]as any);
     const [matchOfTheDay, setMatchOfTheDay] = useState([] as any);
+    const [matchesLive, setMatchesLive] = useState([] as any);
 
     const [activeScroll, setActiveScroll] = useState([] as any);
-    const [database,setDatabase] = useState(collection(db,"matchesEuro2024"));
+    const [database,setDatabase] = useState(euroMatchesRef);
 
     const [classname1, setClassname1] = useState('categoryItems active');
     const [classname2, setClassname2] = useState('categoryItems');
@@ -67,6 +66,38 @@ const MainPage:React.FC = () => {
             console.log(err)
         }
     };
+    const fetchCombinedMatchData = async (): Promise<MatchData[]> => {
+        const euro2024Matches = await getDocs(euroMatchesRef);
+        const copaAmericaMatches = await getDocs(copaMatchesRef);
+
+        const euro2024MatchesData: MatchData[] = euro2024Matches.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+        } as MatchData));
+
+        const copaAmericaMatchesData: MatchData[] = copaAmericaMatches.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data()
+        } as MatchData));
+
+        // Combine the data
+        const combinedMatches = [...euro2024MatchesData, ...copaAmericaMatchesData];
+
+        const matchesLive: MatchData[] = [];
+        for (let i = 0; i < combinedMatches.length; i++) {
+            //@ts-ignore
+            if (Date.now()>combinedMatches[i].matchHour.toDate().getTime()){
+                matchesLive.push(combinedMatches[i])
+            }
+        }
+        return matchesLive;
+    };
+    useEffect(() => {
+        fetchCombinedMatchData().then(data => {
+            if (data !== null)
+                setMatchesLive(data);
+        });
+    }, []);
 
     useEffect(() => {
         fetchMatchData(euroMatchesRef).then(data => {
@@ -129,7 +160,18 @@ const MainPage:React.FC = () => {
                 }}>see all
                 </button>
             </div>
-            <ScrollContainerHorizontal></ScrollContainerHorizontal>
+            {matchesLive.length === 0 &&
+                <div style={{
+                    height:"9vh",
+                    display: "flex"
+                }}>
+                    <text className={"subInfo"} style={{
+                        marginTop: 15
+                    }}>No live matches now
+                    </text>
+                </div>}
+{
+    matchesLive.length > 0 && <ScrollContainerHorizontal itemsList={matchesLive}></ScrollContainerHorizontal>}
             <div style={{
                 display: "flex",
                 gap: 60,
@@ -158,7 +200,7 @@ const MainPage:React.FC = () => {
             </div>
             <div style={{
                 display: "flex",
-            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 33}
+            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 35}
                                                      itemsList={activeScroll} database={database}></ScrollContainerVerticalForMatchSlots>
             </div>
 

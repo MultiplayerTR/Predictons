@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import {collection, doc, getDocs} from "firebase/firestore";
-import {auth, db} from "./config/firebase";
+import {auth, copaMatchesRef, db, euroMatchesRef} from "./config/firebase";
 
 type MatchData = {
     id: string;
@@ -19,8 +19,6 @@ type Prediction = {
 
 const PredictionPage = () => {
 
-    const euroMatchesRef = collection(db,"matchesEuro2024");
-    const copaMatchesRef = collection(db,"matchesCopaAmerica");
     const [database,setDatabase] = useState(collection(db,"matchesEuro2024"));
     const [activeScroll, setActiveScroll] = useState([] as any);
     const [euroMatches, setEuroMatches] = useState([] as any);
@@ -55,7 +53,7 @@ const PredictionPage = () => {
             const predictions: Prediction[] = predictionData.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Prediction);
             if (predictions.length >0){
                 for (let j = 0; j < predictions.length; j++) {
-                    if (predictions[i].id === matches[i].id+userId){
+                    if (predictions[j].id === matches[i].id+userId){
                         matchesWithUserPredictions.push(matches[i]);
                     }
                 }
@@ -93,7 +91,8 @@ const PredictionPage = () => {
                 <text className={"subInfo"}>Prizes will be received at the end of the tournament.</text>
             </div>
             <div className={"buttonContainer"} style={{
-                marginTop: 10
+                marginTop: 10,
+                marginLeft:8,
             }}>
                 <button onClick={handleActivateEuro} className={classname1}>
                     <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>

@@ -70,7 +70,7 @@ const ProfilePage = () => {
             const predictions: Prediction[] = predictionData.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Prediction);
             if (predictions.length >0){
                 for (let j = 0; j < predictions.length; j++) {
-                    if (predictions[i].id === matches[i].id+userId){
+                    if (predictions[j].id === matches[i].id+userId){
                         matchesWithUserPredictions.push(matches[i]);
                     }
                 }

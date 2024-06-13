@@ -30,7 +30,7 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
                         <div key={index}>
                             <MatchSlot
                                 // @ts-ignore
-                                matchId={item.id} team1={item.team1} team2={item.team2} score1={item.scoreForTeam1} score2={item.scoreForTeam2} matchTime={item.matchHour} category={database}></MatchSlot>
+                                matchId={item.id} team1={item.team1} team2={item.team2} score1={item.score1} score2={item.score2} matchTime={item.matchHour} category={database}></MatchSlot>
                         </div>
                     ))}
                 </div>

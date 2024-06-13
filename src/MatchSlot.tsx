@@ -68,6 +68,9 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
     const [predictForTeam1, setPredictionForTeam1] = useState<string>();
     const [scoreForTeam2, setScoreForTeam2] = useState<string>();
     const [predictForTeam2, setPredictionForTeam2] = useState<string>();
+    const [liveScore1, setLiveScore1] = useState<string>();
+    const [liveScore2, setLiveScore2] = useState<string>();
+    const [noPrediction, setNoPrediction] = useState(true);
     const [height, setHeight] = useState<number>(160);
     let [rePredictAmount, setRePredictAmount] = useState<number>(0);
     const [activateScoreSelection, setActivateScoreSelection] = useState<boolean>(false);
@@ -89,7 +92,6 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
     const fetchUserPredictions = async (collectionRef: any, matchId: string,userId:string) => {
         const predictionData = await getDocs(collection(doc(collectionRef, matchId), "predictions"));
         const predictions: Prediction[] = predictionData.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Prediction);
-        console.log(predictions)
         if (predictions.length >0){
             for (let i = 0; i < predictions.length; i++) {
                 if (predictions[i].id === matchId+userId){
@@ -117,9 +119,12 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
             setScoreForTeam1(predictForTeam1)
             setScoreForTeam2(predictForTeam2)
             setPredictEnable(true)
+            setNoPrediction(false)
         }
-        else
+        else{
             setPredictEnable(false)
+            setNoPrediction(true)
+        }
     }, [predictForTeam1,predictForTeam2]);
 
     useEffect(() => {
@@ -133,6 +138,15 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
     useEffect(()=>{
         setRePredictable(rePredictAmount > 0);
     }, [rePredictAmount])
+
+    useEffect(() => {
+        if(Date.now()>matchTime.toDate().getTime()){
+            setMatchLive(true)
+            setPredictEnable(true)
+            setLiveScore1(score1);
+            setLiveScore2(score2);
+        }
+    }, [matchTime, score1, score2]);
 
 
     const handleSelectTeam1 = (number: number) => {
@@ -218,13 +232,13 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                     {matchLive && <div style={{
                         marginTop:10
                     }}>
-                        <h3>{score1}-{score2}</h3>
+                        <h3>{liveScore1}-{liveScore2}</h3>
                         {predictEnable && <h6 style={{
                             color: "#00FF1A",
                             fontSize: "12px",
                             marginTop:8
-                        }}>00:00</h6>}
-                        {predictEnable && <text className={"subInfo"} style={{
+                        }}>Live</h6>}
+                        {predictEnable && !noPrediction && <text className={"subInfo"} style={{
                             bottom:0
                         }}
                         >Your Prediction: <text style={{
@@ -232,6 +246,11 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                             fontSize: "12px",
                             fontWeight: "bold",
                         }}>{scoreForTeam1 + " - " + scoreForTeam2}</text>
+                        </text>}
+                        {predictEnable && noPrediction && <text className={"subInfo"} style={{
+                            bottom:0
+                        }}
+                        >No prediction
                         </text>}
                     </div>}
                 </div>}
