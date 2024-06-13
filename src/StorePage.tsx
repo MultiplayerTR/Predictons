@@ -25,7 +25,7 @@ const StorePage = () => {
             <div>
                 <MembershipSlot VIP={false}></MembershipSlot>
                 <MembershipSlot VIP={true}></MembershipSlot>
-                <button onClick={BecomeVIP} className={"createLeagueButton active"}>Become VIP for 1 TON/m</button>
+                <button className={"createLeagueButton active"}>VIP Membership will be available soon</button>
             </div>
         </div>
     );

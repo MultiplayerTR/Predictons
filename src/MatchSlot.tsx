@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import HorizontalNumberSlider from "./HorizontalNumberSlider";
-import { Timestamp } from 'firebase/firestore';
+import {collection, doc, Timestamp, setDoc, getDocs} from 'firebase/firestore';
 import Flag from 'react-world-flags';
+import {auth} from "./config/firebase";
 
 interface teams  {
+    matchId:string;
     team1:string;
     team2:string;
-    prediction1: string;
-    prediction2: string;
     score1:string;
     score2: string;
     matchTime:Timestamp;
+    category:any;
 }
 
 const countryCodes: { [key: string]: string } = {
@@ -56,8 +57,12 @@ const countryCodes: { [key: string]: string } = {
     'Uruguay': 'UY',
     'Venezuela': 'VE'
 };
-
-const MatchSlot: React.FC<teams>= ({team1,team2,prediction1,prediction2, score1,score2,matchTime}) => {
+type Prediction = {
+    id: string;
+    predictionScore1: string;
+    predictionScore2: string;
+};
+const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTime,category}) => {
 
     const [scoreForTeam1, setScoreForTeam1] = useState<string>();
     const [predictForTeam1, setPredictionForTeam1] = useState<string>();
@@ -72,15 +77,50 @@ const MatchSlot: React.FC<teams>= ({team1,team2,prediction1,prediction2, score1,
     const [matchLive, setMatchLive] = useState<boolean>(false);
     const [matchDone, setMatchDone] = useState<boolean>(false);
 
+    //@ts-ignore
+    const userId = auth.currentUser.uid;
+
+    const updateUserPrediction = async (collectionRef: any, matchId: string, userId:string,prediction: { prediction1: string|undefined, prediction2: string|undefined }): Promise<void> => {
+        const userPredictionDocRef = doc(collection(doc(collectionRef, matchId), 'predictions'),matchId+userId);
+        await setDoc(userPredictionDocRef, prediction, { merge: true });
+        console.log("User prediction updated");
+    };
+
+    const fetchUserPredictions = async (collectionRef: any, matchId: string,userId:string) => {
+        const predictionData = await getDocs(collection(doc(collectionRef, matchId), "predictions"));
+        const predictions: Prediction[] = predictionData.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Prediction);
+        console.log(predictions)
+        if (predictions.length >0){
+            for (let i = 0; i < predictions.length; i++) {
+                if (predictions[i].id === matchId+userId){
+                    //@ts-ignore
+                    setPredictionForTeam1(predictions[i].prediction1);
+                    //@ts-ignore
+                    setPredictionForTeam2(predictions[i].prediction2);
+                }
+            }
+        }
+        else{
+            setPredictionForTeam1(undefined)
+            setPredictionForTeam2(undefined)
+        }
+    };
+
     useEffect(() => {
-        if (prediction1 !== "" && prediction2 !== "") {
-            setScoreForTeam1(prediction1)
-            setScoreForTeam2(prediction2)
+
+        fetchUserPredictions(category,matchId,userId)
+
+    }, [category, matchId, userId]);
+
+    useEffect(() => {
+        if (predictForTeam1 !== undefined && predictForTeam2 !== undefined) {
+            setScoreForTeam1(predictForTeam1)
+            setScoreForTeam2(predictForTeam2)
             setPredictEnable(true)
         }
         else
             setPredictEnable(false)
-    }, [prediction1,prediction2]);
+    }, [predictForTeam1,predictForTeam2]);
 
     useEffect(() => {
         if (predictForTeam1 !== undefined && predictForTeam2 !== undefined){
@@ -108,17 +148,19 @@ const MatchSlot: React.FC<teams>= ({team1,team2,prediction1,prediction2, score1,
             setHeight(210)
         else
         {
-            if (scoreForTeam1 === undefined && scoreForTeam2 === undefined)
+            setPredictionForTeam1(undefined)
+            setPredictionForTeam2(undefined)
+            if (scoreForTeam1 !== undefined && scoreForTeam2 !== undefined)
             {
-                setPredictionForTeam1(undefined)
-                setPredictionForTeam2(undefined)
+                setScoreForTeam1(undefined);
+                setScoreForTeam2(undefined);
             }
 
             setHeight(160)
         }
     }
     
-    const handleSavePrediction = () =>{
+    const handleSavePrediction = async () =>{
         setPredictEnable(true);
         setScoreForTeam1(predictForTeam1);
         setScoreForTeam2(predictForTeam2);
@@ -127,6 +169,11 @@ const MatchSlot: React.FC<teams>= ({team1,team2,prediction1,prediction2, score1,
             rePredictAmount--;
             setRePredictAmount(rePredictAmount)
         }
+        const prediction = {
+            prediction1: scoreForTeam1,
+            prediction2: scoreForTeam2
+        };
+        await updateUserPrediction(category, matchId,userId,prediction);
         setHeight(160)
     }
 
@@ -205,7 +252,7 @@ const MatchSlot: React.FC<teams>= ({team1,team2,prediction1,prediction2, score1,
                         </button>}
                 </div>}
                 {matchDone &&
-                    <text className={"subInfo"}>Your prediction: {prediction1}-{prediction2}</text>
+                    <text className={"subInfo"}>Your prediction: {predictForTeam1}-{predictForTeam2}</text>
                 }
             </div>
             <div>

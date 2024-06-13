@@ -1,16 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import ScrollContainerHorizontal from "./ScrollContainerHorizontal";
-import {db} from "./config/firebase";
-import {getDocs,collection} from "firebase/firestore"
+import {auth, db} from "./config/firebase";
+import {getDocs, collection, doc} from "firebase/firestore"
 import MatchOfTheDay from "./MatchOfTheDay";
 
 type MatchData = {
     id: string;
     team1: string;
     team2: string;
-    prediction1: string;
-    prediction2: string;
     score1: number;
     score2: number;
     matchHour: string;
@@ -24,41 +22,26 @@ const MainPage:React.FC = () => {
 
     const [euroMatches, setEuroMatches] = useState([] as any);
     const [copaMatches, setCopaMatches] = useState([]as any);
-    const [matchOfTheDay, setMatchOfTheDay] = useState<MatchData | null>(null);
+    const [matchOfTheDay, setMatchOfTheDay] = useState([] as any);
 
     const [activeScroll, setActiveScroll] = useState([] as any);
+    const [database,setDatabase] = useState(collection(db,"matchesEuro2024"));
 
     const [classname1, setClassname1] = useState('categoryItems active');
     const [classname2, setClassname2] = useState('categoryItems');
 
-    const getEuroMatches = async () => {
-        try {
-            const matchData = await getDocs(euroMatchesRef);
-            const simplifiedData = matchData.docs.map((doc) => ({...doc.data(),id:doc.id}));
-            setEuroMatches(simplifiedData);
-            setActiveScroll(simplifiedData);
-        }
-        catch (err){
-            console.log(err)
-        }
+    const fetchMatchData = async (collectionRef: any): Promise<MatchData[]> => {
+        const matchData = await getDocs(collectionRef);
+        // @ts-ignore
+        const matches = matchData.docs.map((doc) => ({ id: doc.id, ...doc.data() } as MatchData));
+        return matches;
     };
 
-    const getCopaMatches = async () => {
-        try {
-            const matchData = await getDocs(copaMatchesRef);
-            const simplifiedData = matchData.docs.map((doc) => ({...doc.data(),id:doc.id}));
-            setCopaMatches(simplifiedData);
-        }
-        catch (err){
-            console.log(err)
-        }
-    };
     const getMatchOfTheDay = async () => {
         try {
             const matchData = await getDocs(matchOfTheDayRef);
             const simplified = matchData.docs.map((doc) => ({...doc.data(),id:doc.id}))[0] as MatchData;
             setMatchOfTheDay(simplified)
-            console.log(matchOfTheDay)
         }
         catch (err){
             console.log(err)
@@ -66,20 +49,29 @@ const MainPage:React.FC = () => {
     };
 
     useEffect(() => {
-        getEuroMatches();
+        fetchMatchData(euroMatchesRef).then(data => {
+                setEuroMatches(data)
+                setActiveScroll(data)
+            }
+        )
 
-        getCopaMatches();
-
+        fetchMatchData(copaMatchesRef).then(data => {
+                setCopaMatches(data)
+            }
+        )
         getMatchOfTheDay();
+
     }, []);
 
     const handleActivateEuro = () => {
         setActiveScroll(euroMatches)
+        setDatabase(collection(db,"matchesEuro2024"))
         setClassname1("categoryItems active")
         setClassname2("categoryItems")
     }
     const handleActivateCopa = () => {
         setActiveScroll(copaMatches)
+        setDatabase(collection(db,"matchesCopaAmerica"))
         setClassname1("categoryItems")
         setClassname2("categoryItems active")
     }
@@ -96,8 +88,7 @@ const MainPage:React.FC = () => {
             {matchOfTheDay ?(
                 <MatchOfTheDay
                     //@ts-ignore
-                    team1={matchOfTheDay.team1} team2={matchOfTheDay.team2} prediction1={matchOfTheDay.prediction1} prediction2={matchOfTheDay.prediction1} score1={matchOfTheDay.score1} score2={matchOfTheDay.score2} matchTime={matchOfTheDay.matchHour}></MatchOfTheDay>
-
+                    team1={matchOfTheDay.team1} team2={matchOfTheDay.team2} score1={matchOfTheDay.score1} score2={matchOfTheDay.score2} matchTime={matchOfTheDay.matchHour}></MatchOfTheDay>
             ):""}
             <div style={{
                 display: "flex",
@@ -148,7 +139,7 @@ const MainPage:React.FC = () => {
             <div style={{
                 display: "flex",
             }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 33}
-                                                     itemsList={activeScroll}></ScrollContainerVerticalForMatchSlots>
+                                                     itemsList={activeScroll} database={database}></ScrollContainerVerticalForMatchSlots>
             </div>
 
         </div>

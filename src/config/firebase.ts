@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {getAuth, GoogleAuthProvider} from "firebase/auth";
+import {getAuth, GoogleAuthProvider,onAuthStateChanged,signInAnonymously} from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
 
 const firebase = {
@@ -13,8 +13,28 @@ const firebase = {
     measurementId: "G-QLWH6V00DJ"
 };
 
+
 const app = initializeApp(firebase);
 const analytics = getAnalytics(app);
-export const auth = getAuth(app);
+export const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const uid = user.uid;
+        // ...
+    } else {
+        signInAnonymously(auth)
+            .then(() => {
+                // Signed in..
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // ...
+            });
+    }
+});
+
 export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app);

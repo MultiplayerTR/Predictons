@@ -6,8 +6,6 @@ import Flag from "react-world-flags";
 interface teams  {
     team1:string;
     team2:string;
-    prediction1: string;
-    prediction2: string;
     score1:string;
     score2: string;
     matchTime:Timestamp;
@@ -57,7 +55,7 @@ const countryCodes: { [key: string]: string } = {
     'Venezuela': 'VE'
 };
 
-const MatchOfTheDay: React.FC<teams>= ({team1,team2,prediction1,prediction2, score1,score2,matchTime}) => {
+const MatchOfTheDay: React.FC<teams>= ({team1,team2, score1,score2,matchTime}) => {
     return (
         <div className={"mostPopularMatchContainer"}>
             <div className={"matchSlot mostPopularMatch"}>

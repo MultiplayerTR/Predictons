@@ -5,9 +5,10 @@ import MatchSlot from "./MatchSlot";
 interface ListProps  {
     height: number;
     itemsList: string[][];
+    database:any;
 }
 
-const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, itemsList}) => {
+const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, itemsList,database}) => {
     const scrollViewRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -18,7 +19,6 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
     }, [itemsList]);
 
     return (
-        //takım bayrakları eklenicek
         <>
             <div
                 className="vertical-scroll-container"
@@ -28,9 +28,9 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
                 <div>
                     {itemsList.map((item, index) => (
                         <div key={index}>
-                            <MatchSlot team1={
+                            <MatchSlot
                                 // @ts-ignore
-                                item.team1} team2={item.team2} score1={item.scoreForTeam1} score2={item.scoreForTeam2} matchTime={item.matchHour} prediction1={item.prediction1} prediction2={item.prediction2}></MatchSlot>
+                                matchId={item.id} team1={item.team1} team2={item.team2} score1={item.scoreForTeam1} score2={item.scoreForTeam2} matchTime={item.matchHour} category={database}></MatchSlot>
                         </div>
                     ))}
                 </div>
