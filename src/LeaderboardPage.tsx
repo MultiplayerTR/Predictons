@@ -27,6 +27,8 @@ const LeaderboardPage = () => {
     const [activeButton2, setActiveButton2] = React.useState("durationButton")
     const [activeButton3, setActiveButton3] = React.useState("durationButton")
 
+    const [leaguesEnabled, setLeaguesEnabled] = React.useState(false);
+
     const handleActivateEuro = () => {
         setUserData(usersFromDBEuro)
         setClassname1("categoryItems active")
@@ -58,54 +60,64 @@ const LeaderboardPage = () => {
         <div>
             <h1 className={"bigHeader"}>TOURNAMENT LEADERBOARD</h1>
             <text className={"subInfo"}>Make the correct predictions and compete with other players</text>
-            <div className={"buttonContainer"}>
-                <button onClick={handleActivateEuro} className={classname1}>
-                    <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>
-                    Euro 2024
-                </button>
-                <button onClick={handleActivateCopa} className={classname2}>
-                    <img src={require("./Images/CopaAmerica.png")} alt={"Copa America icon"}></img>Copa America
-                </button>
-            </div>
-            <div style={{
-                marginTop:16
-            }}>
-                <button onClick={handleActivateDaily} className={activeButton1}>DAILY</button>
-                <button onClick={handleActivateWeekly} className={activeButton2}>WEEKLY</button>
-                <button onClick={handleActivateTournament} className={activeButton3}>TOURNAMENT</button>
-            </div>
-            <div className={"podiumContainer"}>
-                <PodiumSlot length={48} placement={"2"} username={usersFromDBEuro[1][0]} points={usersFromDBEuro[1][3]}></PodiumSlot>
-                <PodiumSlot length={72} placement={"1"} username={usersFromDBEuro[0][0]} points={usersFromDBEuro[0][3]}></PodiumSlot>
-                <PodiumSlot length={48} placement={"3"} username={usersFromDBEuro[2][0]} points={usersFromDBEuro[2][3]}></PodiumSlot>
-            </div>
-            <ScrollContainerVerticalForLeaderboard height={window.innerHeight / 100 * 21}
-                                                   items={userData}></ScrollContainerVerticalForLeaderboard>
-            <div style={{
-                display: "grid",
-                textAlign: "left",
-                marginTop: 18
-            }}>
-                <h4>Reward</h4>
-                <text className={"subInfo"}>Which the winner will receive at the end of the tournament..</text>
-                <text className={"rewardText"}>1 TON</text>
-            </div>
-            <NavLink to={"/leagues/joined"} className={"joinedLeagueButton"}>
-                <div>
-                    <h4 className={"headerText"}>Leagues you joined</h4>
-                    <text className={"subInfo"}>Prizes wil be received at the end of tournaments</text>
+
+            {leaguesEnabled && <div>
+                <div className={"buttonContainer"}>
+                    <button onClick={handleActivateEuro} className={classname1}>
+                        <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>
+                        Euro 2024
+                    </button>
+                    <button onClick={handleActivateCopa} className={classname2}>
+                        <img src={require("./Images/CopaAmerica.png")} alt={"Copa America icon"}></img>Copa America
+                    </button>
                 </div>
                 <div style={{
-                    display: "grid",
-                    width:120,
-                    justifyItems:"end",
-                    alignItems:"center",
+                    marginTop: 16
                 }}>
-                    <img src={require("./Images/BackButton.png")} style={{
-                        rotate:"180deg"
-                    }}/>
+                    <button onClick={handleActivateDaily} className={activeButton1}>DAILY</button>
+                    <button onClick={handleActivateWeekly} className={activeButton2}>WEEKLY</button>
+                    <button onClick={handleActivateTournament} className={activeButton3}>TOURNAMENT</button>
                 </div>
-            </NavLink>
+                <div className={"podiumContainer"}>
+                    <PodiumSlot length={48} placement={"2"} username={usersFromDBEuro[1][0]}
+                                points={usersFromDBEuro[1][3]}></PodiumSlot>
+                    <PodiumSlot length={72} placement={"1"} username={usersFromDBEuro[0][0]}
+                                points={usersFromDBEuro[0][3]}></PodiumSlot>
+                    <PodiumSlot length={48} placement={"3"} username={usersFromDBEuro[2][0]}
+                                points={usersFromDBEuro[2][3]}></PodiumSlot>
+                </div>
+                <ScrollContainerVerticalForLeaderboard height={window.innerHeight / 100 * 21}
+                                                       items={userData}></ScrollContainerVerticalForLeaderboard>
+                <div style={{
+                    display: "grid",
+                    textAlign: "left",
+                    marginTop: 18
+                }}>
+                    <h4>Reward</h4>
+                    <text className={"subInfo"}>Which the winner will receive at the end of the tournament..</text>
+                    <text className={"rewardText"}>1 TON</text>
+                </div>
+                <NavLink to={"/leagues/joined"} className={"joinedLeagueButton"}>
+                    <div>
+                        <h4 className={"headerText"}>Leagues you joined</h4>
+                        <text className={"subInfo"}>Prizes wil be received at the end of tournaments</text>
+                    </div>
+                    <div style={{
+                        display: "grid",
+                        width: 120,
+                        justifyItems: "end",
+                        alignItems: "center",
+                    }}>
+                        <img src={require("./Images/BackButton.png")} style={{
+                            rotate: "180deg"
+                        }}/>
+                    </div>
+                </NavLink>
+            </div>
+            }
+            {!leaguesEnabled && <h2 className={"headerText"} style={{
+                marginTop:100
+            }}>Leagues will be available shortly!</h2>}
 
         </div>
 

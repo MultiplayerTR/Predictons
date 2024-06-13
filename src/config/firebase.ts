@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import {getAuth, GoogleAuthProvider,onAuthStateChanged,signInAnonymously} from "firebase/auth";
 import {getFirestore} from "firebase/firestore";
+import {useEffect} from "react";
 
 const firebase = {
     apiKey: "AIzaSyAjWNYA8jA-GUqt4KkD19eghSrI-pG64Fk",
@@ -17,6 +18,8 @@ const firebase = {
 const app = initializeApp(firebase);
 const analytics = getAnalytics(app);
 export const auth = getAuth();
+export const telegramUserId = "userID";
+
 onAuthStateChanged(auth, (user) => {
     if (user) {
         // User is signed in, see docs for a list of available properties

@@ -3,7 +3,8 @@ import MembershipSlot from "./MembershipSlot";
 import MatchSlot from "./MatchSlot";
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import {collection, doc, getDocs} from "firebase/firestore";
-import {auth, db} from "./config/firebase";
+import {auth, db, telegramUserId} from "./config/firebase";
+import {NavLink} from "react-router-dom";
 
 let nick = "Guest";
 let walletId = "";
@@ -39,6 +40,11 @@ const ProfilePage = () => {
 
     //@ts-ignore
     const userId = auth.currentUser.uid;
+
+    if (telegramUserId !== "userID")
+        nick = telegramUserId;
+
+    console.log(telegramUserId)
 
     const handleActivateEuro = () => {
         setActiveScroll(euroMatches)
@@ -118,7 +124,9 @@ const ProfilePage = () => {
                         width:170
                     }}>{nick} <text className={"subInfo"}></text></text>
                     <div className={"profile-edit-verified"}>
-                        <div className={"membershipBadge"}>FREE</div>
+                        <NavLink to={"/store"} className={"membershipBadge"} style={{
+                            textDecoration:"none"
+                        }}>FREE</NavLink>
                     </div>
                 </div>
                 <div className={"wallet-address"}>

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import ScrollContainerHorizontal from "./ScrollContainerHorizontal";
-import {auth, db} from "./config/firebase";
-import {getDocs, collection, doc} from "firebase/firestore"
+import {auth, db, telegramUserId} from "./config/firebase";
+import {getDocs, collection, doc,getDoc} from "firebase/firestore"
 import MatchOfTheDay from "./MatchOfTheDay";
 
 type MatchData = {
@@ -29,6 +29,26 @@ const MainPage:React.FC = () => {
 
     const [classname1, setClassname1] = useState('categoryItems active');
     const [classname2, setClassname2] = useState('categoryItems');
+
+    const [userId, setUserId] = useState<string | null>(null);
+    const [userName, setUserName] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchUserId = async () => {
+            const docRef = doc(db, 'users', telegramUserId);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                setUserId(data?.telegramId);
+                setUserName(data?.userName);
+            } else {
+                console.log('No such document!');
+            }
+        };
+
+        fetchUserId();
+    }, [telegramUserId]);
 
     const fetchMatchData = async (collectionRef: any): Promise<MatchData[]> => {
         const matchData = await getDocs(collectionRef);
