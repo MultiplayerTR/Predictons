@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import MembershipSlot from "./MembershipSlot";
-import MatchSlot from "./MatchSlot";
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import {collection, doc, getDocs} from "firebase/firestore";
 import {db, telegramUserId} from "./config/firebase";
@@ -37,9 +36,6 @@ const ProfilePage = () => {
     const [copaMatches, setCopaMatches] = useState([]as any);
     const [classname1, setClassname1] = useState('categoryItems active');
     const [classname2, setClassname2] = useState('categoryItems');
-
-    //@ts-ignore
-    const userId = auth.currentUser.uid;
 
     if (telegramUserId !== "userID")
         nick = telegramUserId;
@@ -80,7 +76,7 @@ const ProfilePage = () => {
     };
 
     useEffect(() => {
-        fetchMatchData(euroMatchesRef,userId).then(data => {
+        fetchMatchData(euroMatchesRef,telegramUserId).then(data => {
                 if (data !== null){
                     setEuroMatches(data)
                     setActiveScroll(data)
@@ -88,7 +84,7 @@ const ProfilePage = () => {
             }
         )
 
-        fetchMatchData(copaMatchesRef,userId).then(data => {
+        fetchMatchData(copaMatchesRef,telegramUserId).then(data => {
                 if (data !== null)
                     setCopaMatches(data)
             }
