@@ -15,6 +15,7 @@
     "express": "^4.19.2",
     "firebase": "^10.12.2",
     "node-fetch": "^3.3.2",
+    "node.js": "^0.0.1-security",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.23.1",
