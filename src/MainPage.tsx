@@ -34,7 +34,7 @@ const MainPage:React.FC = () => {
 
     useEffect(() => {
         const fetchUserId = async () => {
-            const docRef = doc(db, 'users', telegramUserId);
+            const docRef = doc(db, 'users');
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
