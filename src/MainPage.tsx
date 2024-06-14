@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import ScrollContainerHorizontal from "./ScrollContainerHorizontal";
-import {auth, copaMatchesRef, db, euroMatchesRef, telegramUserId} from "./config/firebase";
+import {copaMatchesRef, db, euroMatchesRef, telegramUserId} from "./config/firebase";
 import {getDocs, collection, doc,getDoc} from "firebase/firestore"
 import MatchOfTheDay from "./MatchOfTheDay";
 

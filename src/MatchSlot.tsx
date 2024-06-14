@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import HorizontalNumberSlider from "./HorizontalNumberSlider";
 import {collection, doc, Timestamp, setDoc, getDocs} from 'firebase/firestore';
 import Flag from 'react-world-flags';
-import {auth} from "./config/firebase";
+import {telegramUserId} from "./config/firebase";
 
 interface teams  {
     matchId:string;
@@ -81,7 +81,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
     const [matchDone, setMatchDone] = useState<boolean>(false);
 
     //@ts-ignore
-    const userId = auth.currentUser.uid;
+    const userId = telegramUserId;
 
     const updateUserPrediction = async (collectionRef: any, matchId: string, userId:string,prediction: { prediction1: string|undefined, prediction2: string|undefined }): Promise<void> => {
         const userPredictionDocRef = doc(collection(doc(collectionRef, matchId), 'predictions'),matchId+userId);

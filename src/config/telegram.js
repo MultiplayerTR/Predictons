@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const fetch = require('node-fetch');
 const admin = require('firebase-admin');
 const serviceAccount = require('./path/to/your/firebase-adminsdk.json');
+let {telegramUserId} = require("./firebase");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -30,6 +31,8 @@ app.post(`/webhook/${TELEGRAM_TOKEN}`, async (req, res) => {
 
             const userRef = db.collection('users').doc(userId.toString());
             await userRef.set({ telegramId: userId, userName }, { merge: true });
+
+            telegramUserId = userId+userName;
 
             console.log(`User ${userName} started the bot. Telegram ID: ${userId}`);
         }

@@ -3,7 +3,7 @@ import MembershipSlot from "./MembershipSlot";
 import MatchSlot from "./MatchSlot";
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import {collection, doc, getDocs} from "firebase/firestore";
-import {auth, db, telegramUserId} from "./config/firebase";
+import {db, telegramUserId} from "./config/firebase";
 import {NavLink} from "react-router-dom";
 
 let nick = "Guest";

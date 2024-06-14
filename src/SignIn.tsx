@@ -1,9 +1,10 @@
 import React from 'react';
-import {auth, googleProvider} from "./config/firebase";
+import { googleProvider} from "./config/firebase";
 import { signInWithPopup, signOut} from"firebase/auth";
 
 const SignIn = () => {
 
+    /*
     const signInWithGoogle = async () => {
         try{
             await signInWithPopup(auth,googleProvider);
@@ -27,7 +28,7 @@ const SignIn = () => {
             <button onClick={signInWithGoogle}>Sign in with google</button>
             <button onClick={signOutMethod}>Sign Out</button>
         </div>
-    );
+    );*/
 };
 
 export default SignIn;
