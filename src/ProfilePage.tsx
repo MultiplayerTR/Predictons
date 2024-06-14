@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import MembershipSlot from "./MembershipSlot";
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import {collection, doc, getDocs} from "firebase/firestore";
-import {db, telegramUserId} from "./config/firebase";
+import {auth, db} from "./config/firebase";
 import {NavLink} from "react-router-dom";
 
 let nick = "Guest";
@@ -37,10 +37,8 @@ const ProfilePage = () => {
     const [classname1, setClassname1] = useState('categoryItems active');
     const [classname2, setClassname2] = useState('categoryItems');
 
-    if (telegramUserId !== "userID")
-        nick = telegramUserId;
-
-    console.log(telegramUserId)
+    //@ts-ignore
+    const userId = auth.currentUser?.uid;
 
     const handleActivateEuro = () => {
         setActiveScroll(euroMatches)
@@ -56,7 +54,7 @@ const ProfilePage = () => {
         setClassname2("categoryItems active")
     }
 
-    const fetchMatchData = async (collectionRef: any,userId:string) => {
+    const fetchMatchData = async (collectionRef: any,userId:string | undefined) => {
         const matchData = await getDocs(collectionRef);
         // @ts-ignore
         const matches = matchData.docs.map((doc) => ({ id: doc.id, ...doc.data() } as MatchData));
@@ -76,7 +74,7 @@ const ProfilePage = () => {
     };
 
     useEffect(() => {
-        fetchMatchData(euroMatchesRef,telegramUserId).then(data => {
+        fetchMatchData(euroMatchesRef,userId).then(data => {
                 if (data !== null){
                     setEuroMatches(data)
                     setActiveScroll(data)
@@ -84,7 +82,7 @@ const ProfilePage = () => {
             }
         )
 
-        fetchMatchData(copaMatchesRef,telegramUserId).then(data => {
+        fetchMatchData(copaMatchesRef,userId).then(data => {
                 if (data !== null)
                     setCopaMatches(data)
             }

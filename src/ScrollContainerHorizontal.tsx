@@ -74,7 +74,7 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
                 className="scroll-container-horizontal"
                 style={{ overflow: 'auto', whiteSpace: 'nowrap' }}
             >
-                <div>
+
                     {itemsList.map((
                         //@ts-ignore
                         item, index) => (
@@ -121,7 +121,6 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
                             </div>
                         </div>
                     ))}
-                </div>
 
             </div>
         </div>

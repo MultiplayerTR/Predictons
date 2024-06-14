@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import {collection, doc, getDocs} from "firebase/firestore";
-import {copaMatchesRef, db, euroMatchesRef, telegramUserId} from "./config/firebase";
+import {auth, copaMatchesRef, db, euroMatchesRef} from "./config/firebase";
 
 type MatchData = {
     id: string;
@@ -27,7 +27,7 @@ const PredictionPage = () => {
     const [classname2, setClassname2] = useState('categoryItems');
 
     //@ts-ignore
-    const userId = telegramUserId;
+    const userId = auth.currentUser?.uid;
 
     const handleActivateEuro = () => {
         setActiveScroll(euroMatches)
@@ -43,7 +43,7 @@ const PredictionPage = () => {
         setClassname2("categoryItems active")
     }
 
-    const fetchMatchData = async (collectionRef: any,userId:string) => {
+    const fetchMatchData = async (collectionRef: any,userId:string | undefined) => {
         const matchData = await getDocs(collectionRef);
         // @ts-ignore
         const matches = matchData.docs.map((doc) => ({ id: doc.id, ...doc.data() } as MatchData));

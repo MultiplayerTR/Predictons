@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import HorizontalNumberSlider from "./HorizontalNumberSlider";
 import {collection, doc, Timestamp, setDoc, getDocs} from 'firebase/firestore';
 import Flag from 'react-world-flags';
-import {telegramUserId} from "./config/firebase";
+import {auth} from "./config/firebase";
 
 interface teams  {
     matchId:string;
@@ -81,15 +81,15 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
     const [matchDone, setMatchDone] = useState<boolean>(false);
 
     //@ts-ignore
-    const userId = telegramUserId;
+    const userId = auth.currentUser?.uid;
 
-    const updateUserPrediction = async (collectionRef: any, matchId: string, userId:string,prediction: { prediction1: string|undefined, prediction2: string|undefined }): Promise<void> => {
+    const updateUserPrediction = async (collectionRef: any, matchId: string, userId:string | undefined,prediction: { prediction1: string|undefined, prediction2: string|undefined }): Promise<void> => {
         const userPredictionDocRef = doc(collection(doc(collectionRef, matchId), 'predictions'),matchId+userId);
         await setDoc(userPredictionDocRef, prediction, { merge: true });
         console.log("User prediction updated");
     };
 
-    const fetchUserPredictions = async (collectionRef: any, matchId: string,userId:string) => {
+    const fetchUserPredictions = async (collectionRef: any, matchId: string, userId:string | undefined) => {
         const predictionData = await getDocs(collection(doc(collectionRef, matchId), "predictions"));
         const predictions: Prediction[] = predictionData.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Prediction);
         if (predictions.length >0){
@@ -147,6 +147,14 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
             setLiveScore2(score2);
         }
     }, [matchTime, score1, score2]);
+
+    useEffect(() => {
+        if (Date.now()/60000-matchTime.toDate().getTime()/60000>90){
+            setMatchDone(true)
+            setScoreForTeam1(predictForTeam1)
+            setScoreForTeam2(predictForTeam2)
+        }
+    },[predictForTeam1, predictForTeam2,matchTime]);
 
 
     const handleSelectTeam1 = (number: number) => {
@@ -255,7 +263,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                     </div>}
                 </div>}
                 {matchDone && <div>
-                    <h3>0-0</h3>
+                    <h3>{liveScore1}-{liveScore2}</h3>
                     <text className={"subInfo"}>Completed</text>
                 </div>}
                 {!matchDone && <div>
@@ -270,8 +278,11 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                         }}>Re-predict
                         </button>}
                 </div>}
-                {matchDone &&
-                    <text className={"subInfo"}>Your prediction: {predictForTeam1}-{predictForTeam2}</text>
+                {matchDone && !noPrediction &&
+                    <text className={"subInfo"}>Your prediction: {scoreForTeam1}-{scoreForTeam2}</text>
+                }
+                {matchDone && noPrediction &&
+                    <text className={"subInfo"}>No Prediction</text>
                 }
             </div>
             <div>
