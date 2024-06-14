@@ -240,10 +240,9 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                     {matchLive && <div style={{
                         marginTop:10
                     }}>
-                        <h3>{liveScore1}-{liveScore2}</h3>
                         {predictEnable && <h6 style={{
                             color: "#00FF1A",
-                            fontSize: "12px",
+                            fontSize: "20px",
                             marginTop:8
                         }}>Live</h6>}
                         {predictEnable && !noPrediction && <text className={"subInfo"} style={{
@@ -263,8 +262,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                     </div>}
                 </div>}
                 {matchDone && <div>
-                    <h3>{liveScore1}-{liveScore2}</h3>
-                    <text className={"subInfo"}>Completed</text>
+                    <text className={"bigHeader"}>Completed</text>
                 </div>}
                 {!matchDone && <div>
                     {!predictEnable && <div>

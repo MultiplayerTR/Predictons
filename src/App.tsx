@@ -18,8 +18,8 @@ import TelegramWindow from "./TelegramWindow";
 function App() {
   return (
       <Router>
+          <TelegramWindow />
     <div className="App">
-        <TelegramWindow />
             <Routes>
                 <Route path="/" element={<MainPage/>}></Route>
                 <Route path="/predictions" element={<PredictionPage/>}></Route>
