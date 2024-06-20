@@ -117,7 +117,7 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
                                             color:"white",
                                             borderRadius:"5px"
                                         }}>{//@ts-ignore
-                                            item.HOME_GOAL_VAR}-{item.AWAY_GOAL_VAR}</text>
+                                            item.HOME_SCORE_CURRENT}-{item.AWAY_SCORE_CURRENT}</text>
                                         <Flag code={
                                             //@ts-ignore
                                             countryCodes[item.AWAY_NAME]} className={"circle-flag"} style={{
