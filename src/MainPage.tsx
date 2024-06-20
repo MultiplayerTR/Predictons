@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import ScrollContainerHorizontal from "./ScrollContainerHorizontal";
 import {copaMatchesRef, db, euroMatchesRef} from "./config/firebase";
-import {getDocs, collection, doc,getDoc} from "firebase/firestore"
+import {collection, getDocs} from "firebase/firestore"
 import MatchOfTheDay from "./MatchOfTheDay";
 
 type MatchData = {
@@ -18,12 +18,12 @@ const MainPage:React.FC = () => {
 
     const matchOfTheDayRef = collection(db,"matchOfTheDay");
 
-    const [euroMatches, setEuroMatches] = useState([] as any);
+    const [euroMatches, setEuroMatches] = useState([]);
     const [copaMatches, setCopaMatches] = useState([]as any);
     const [matchOfTheDay, setMatchOfTheDay] = useState([] as any);
     const [matchesLive, setMatchesLive] = useState([] as any);
 
-    const [activeScroll, setActiveScroll] = useState([] as any);
+    const [activeScroll, setActiveScroll] = useState([]);
     const [database,setDatabase] = useState(euroMatchesRef);
 
     const [classname1, setClassname1] = useState('categoryItems active');
@@ -36,6 +36,24 @@ const MainPage:React.FC = () => {
         return matches;
     };
 
+    const euroMatchData = async () =>{
+        const url = 'https://flashlive-sports.p.rapidapi.com/v1/tournaments/fixtures?locale=en_GB&tournament_stage_id=EcpQtcVi&tournament_season_id=ABkrguJ9';
+        const options = {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-key': '6d2da9a4a8msh5c5c91e352f9038p10911fjsn4d17bc8efc3b',
+                'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
+            }
+        };
+
+        try {
+            const response = await fetch(url, options);
+            return await response.json();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const getMatchOfTheDay = async () => {
         try {
             const matchData = await getDocs(matchOfTheDayRef);
@@ -46,45 +64,13 @@ const MainPage:React.FC = () => {
             console.log(err)
         }
     };
-    const fetchCombinedMatchData = async (): Promise<MatchData[]> => {
-        const euro2024Matches = await getDocs(euroMatchesRef);
-        const copaAmericaMatches = await getDocs(copaMatchesRef);
-
-        const euro2024MatchesData: MatchData[] = euro2024Matches.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data()
-        } as MatchData));
-
-        const copaAmericaMatchesData: MatchData[] = copaAmericaMatches.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data()
-        } as MatchData));
-
-        // Combine the data
-        const combinedMatches = [...euro2024MatchesData, ...copaAmericaMatchesData];
-
-        const matchesLive: MatchData[] = [];
-        for (let i = 0; i < combinedMatches.length; i++) {
-            //@ts-ignore
-            if (Date.now()>combinedMatches[i].matchHour.toDate().getTime()){
-                matchesLive.push(combinedMatches[i])
-            }
-        }
-        return matchesLive;
-    };
-    useEffect(() => {
-        fetchCombinedMatchData().then(data => {
-            if (data !== null)
-                setMatchesLive(data);
-        });
-    }, []);
 
     useEffect(() => {
-        fetchMatchData(euroMatchesRef).then(data => {
-                setEuroMatches(data)
-                setActiveScroll(data)
-            }
-        )
+        euroMatchData().then(data => {
+            setEuroMatches(data.DATA[0].EVENTS)
+            setMatchesLive(data.DATA[0].EVENTS)
+            setActiveScroll(data.DATA[0].EVENTS);
+        })
 
         fetchMatchData(copaMatchesRef).then(data => {
                 setCopaMatches(data)

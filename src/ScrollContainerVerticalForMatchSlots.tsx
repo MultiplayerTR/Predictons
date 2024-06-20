@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import MatchSlot from "./MatchSlot";
 
 // @ts-ignore
@@ -10,12 +10,22 @@ interface ListProps  {
 
 const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, itemsList,database}) => {
     const scrollViewRef = useRef<HTMLDivElement>(null);
+    const [filteredItems, setFilteredItems] = useState(itemsList);
 
     useEffect(() => {
-        // Scroll to top when data changes
         if (scrollViewRef.current) {
             scrollViewRef.current.scrollTop = 0;
         }
+
+        const today = new Date();
+        const filtered = itemsList.filter(item => {
+            // @ts-ignore
+            const date = new Date(item.START_TIME * 1000);
+            return date.getDate() === today.getDate();
+        });
+
+        setFilteredItems(filtered);
+
     }, [itemsList]);
 
     return (
@@ -26,11 +36,11 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
                 style={{userSelect: 'none', height: height, overflowY: 'auto'}}
             >
                 <div>
-                    {itemsList.map((item, index) => (
+                    {filteredItems.map((item, index) => (
                         <div key={index}>
                             <MatchSlot
                                 // @ts-ignore
-                                matchId={item.id} team1={item.team1} team2={item.team2} score1={item.score1} score2={item.score2} matchTime={item.matchHour} category={database}></MatchSlot>
+                                matchId={item.EVENT_ID} team1={item.HOME_NAME} team2={item.AWAY_NAME} score1={item.HOME_GOAL_VAR} score2={item.AWAY_GOAL_VAR} matchTime={item.START_TIME} category={database}></MatchSlot>
                         </div>
                     ))}
                 </div>

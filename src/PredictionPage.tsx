@@ -31,53 +31,14 @@ const PredictionPage = () => {
 
     const handleActivateEuro = () => {
         setActiveScroll(euroMatches)
-        setDatabase(collection(db,"matchesEuro2024"))
         setClassname1("categoryItems active")
         setClassname2("categoryItems")
     }
     const handleActivateCopa = () => {
         setActiveScroll(copaMatches)
-        console.log(copaMatches)
-        setDatabase(collection(db,"matchesCopaAmerica"))
         setClassname1("categoryItems")
         setClassname2("categoryItems active")
     }
-
-    const fetchMatchData = async (collectionRef: any,userId:string | undefined) => {
-        const matchData = await getDocs(collectionRef);
-        // @ts-ignore
-        const matches = matchData.docs.map((doc) => ({ id: doc.id, ...doc.data() } as MatchData));
-        const matchesWithUserPredictions: MatchData[] = [];
-        for (let i = 0; i < matches.length; i++) {
-            const predictionData = await getDocs(collection(doc(collectionRef, matches[i].id), "predictions"));
-            const predictions: Prediction[] = predictionData.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Prediction);
-            if (predictions.length >0){
-                for (let j = 0; j < predictions.length; j++) {
-                    if (predictions[j].id === matches[i].id+userId){
-                        matchesWithUserPredictions.push(matches[i]);
-                    }
-                }
-                return matchesWithUserPredictions;
-            }
-        }
-    };
-
-    useEffect(() => {
-        fetchMatchData(euroMatchesRef,userId).then(data => {
-                if (data !== null){
-                    setEuroMatches(data)
-                    setActiveScroll(data)
-                }
-            }
-        )
-
-        fetchMatchData(copaMatchesRef,userId).then(data => {
-                if (data !== null)
-                    setCopaMatches(data)
-            }
-        )
-
-    }, []);
 
     return (
 

@@ -66,6 +66,20 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
 
     const containerRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const [filteredItems, setFilteredItems] = useState(itemsList);
+
+    useEffect(() => {
+
+        const filtered = itemsList.filter(item => {
+            // @ts-ignore
+            console.log(item.STAGE_TYPE)
+            // @ts-ignore
+            return item.STAGE_TYPE === "LIVE";
+        });
+
+        setFilteredItems(filtered);
+
+    }, [itemsList]);
 
     return (
         <div>
@@ -75,7 +89,7 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
                 style={{ overflow: 'auto', whiteSpace: 'nowrap' }}
             >
 
-                    {itemsList.map((
+                    {filteredItems.map((
                         //@ts-ignore
                         item, index) => (
                         <div key={index} ref={el => itemRefs.current[index] = el} className={"liveMatchSlot"}
@@ -91,10 +105,10 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
                                             fontSize: 12,
                                             color: "white"
                                         }}>{//@ts-ignore
-                                            countryCodes[item.team1]}</h2>
+                                            countryCodes[item.HOME_NAME]}</h2>
                                         <Flag code={
                                             //@ts-ignore
-                                            countryCodes[item.team1]} className={"circle-flag"} style={{
+                                            countryCodes[item.HOME_NAME]} className={"circle-flag"} style={{
                                                 width:36,
                                                 height:36
                                         }}></Flag>
@@ -103,10 +117,10 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
                                             color:"white",
                                             borderRadius:"5px"
                                         }}>{//@ts-ignore
-                                            item.score1}-{item.score2}</text>
+                                            item.HOME_GOAL_VAR}-{item.AWAY_GOAL_VAR}</text>
                                         <Flag code={
                                             //@ts-ignore
-                                            countryCodes[item.team2]} className={"circle-flag"} style={{
+                                            countryCodes[item.AWAY_NAME]} className={"circle-flag"} style={{
                                             width:36,
                                             height:36,
                                             marginLeft:10
@@ -115,7 +129,7 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
                                             fontSize: 10,
                                             color: "white"
                                         }}>{//@ts-ignore
-                                            countryCodes[item.team2]}</h2>
+                                            countryCodes[item.AWAY_NAME]}</h2>
                                     </div>
                                 </div>
                             </div>
