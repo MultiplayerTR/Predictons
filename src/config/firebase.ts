@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import {getAuth, GoogleAuthProvider,onAuthStateChanged,signInAnonymously} from "firebase/auth";
-import {collection, getFirestore} from "firebase/firestore";
+import {collection, doc, getFirestore, setDoc} from "firebase/firestore";
 
 const firebase = {
     apiKey: "AIzaSyAjWNYA8jA-GUqt4KkD19eghSrI-pG64Fk",
@@ -18,7 +18,7 @@ const app = initializeApp(firebase);
 const analytics = getAnalytics(app);
 export const auth = getAuth();
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
     if (user) {
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
@@ -34,13 +34,13 @@ onAuthStateChanged(auth, (user) => {
                 const errorMessage = error.message;
                 // ...
             });
+        const userPredictionDocRef = doc(collection(db, 'users'));
+        await setDoc(userPredictionDocRef, { merge: true });
     }
+
 });
 
 
 export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app);
-
-export const euroMatchesRef = collection(db,"matchesEuro2024");
-export const copaMatchesRef = collection(db,"matchesCopaAmerica");
 

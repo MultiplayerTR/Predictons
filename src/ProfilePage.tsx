@@ -1,21 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import MembershipSlot from "./MembershipSlot";
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
-import {collection, doc, getDocs} from "firebase/firestore";
+import {collection, doc, getDocs, setDoc} from "firebase/firestore";
 import {auth, db} from "./config/firebase";
 import {NavLink} from "react-router-dom";
+import {euroMatchData} from "./MainPage";
+import NameEditor from "./NameEditor";
 
-let nick = "Guest";
+let nick = "";
 let walletId = "";
 
-type MatchData = {
-    id: string;
-    team1: string;
-    team2: string;
-    score1: number;
-    score2: number;
-    matchHour: string;
-};
 type Prediction = {
     id: string;
     predictionScore1: string;
@@ -24,13 +18,14 @@ type Prediction = {
 
 const ProfilePage = () => {
 
+    const predictions = collection(db,"predictions");
+    const users = collection(db,"users");
+    const [filteredItems, setFilteredItems] = useState<string[][]>([]);
+    const [predictionData, setPredictionData] = useState([] as any);
     const [isNameEditorOpen, setNameEditorOpen] = useState(false);
     const [name, setName] = useState<string>(nick);
     const [isCopied, setIsCopied] = useState(false);
     const [inputValue, setInputValue] = useState<string>('');
-    const euroMatchesRef = collection(db,"matchesEuro2024");
-    const copaMatchesRef = collection(db,"matchesCopaAmerica");
-    const [database,setDatabase] = useState(collection(db,"matchesEuro2024"));
     const [activeScroll, setActiveScroll] = useState([] as any);
     const [euroMatches, setEuroMatches] = useState([] as any);
     const [copaMatches, setCopaMatches] = useState([]as any);
@@ -40,55 +35,76 @@ const ProfilePage = () => {
     //@ts-ignore
     const userId = auth.currentUser?.uid;
 
+    const getPredictions = async () => {
+        try {
+            const prediction = await getDocs(predictions);
+            const simplified = prediction.docs.map((doc) => ({...doc.data(),id:doc.id}));
+            setPredictionData(simplified)
+            euroMatchData().then(data => {
+                const matches = data.DATA[0].EVENTS as string[][];
+                const filtered = matches.filter((item) => {
+                    for (let i = 0; i < matches.length; i++) {
+                        for (let j = 0; j < simplified.length; j++) {
+                            //@ts-ignore
+                            if(simplified[j].id === matches[i].EVENT_ID+userId){
+                                return simplified[j].id;
+                            }
+                        }
+                    }
+                });
+
+                setFilteredItems(filtered)
+                if (filtered.length>0){
+                    setEuroMatches(filtered)
+                    setActiveScroll(filtered);
+                }
+            })
+        }
+        catch (err){
+            console.log(err)
+        }
+    };
+
+    useEffect(() => {
+        getPredictions();
+
+    }, []);
+    const getUserData = async () => {
+        try {
+            const userData = await getDocs(users);
+            return userData.docs.map((doc) => ({...doc.data(), id: doc.id}));
+        }
+        catch (err){
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        getUserData().then(data => {
+            if (data !== undefined){
+                for (let i = 0; i < data.length; i++) {
+                    if (userId === data[i].id){
+                        //@ts-ignore
+                        if (data[i].nickname !== undefined)
+                            //@ts-ignore
+                            setName(data[i].nickname);
+                    }
+                }
+            }
+        })
+
+    }, []);
+
     const handleActivateEuro = () => {
         setActiveScroll(euroMatches)
-        setDatabase(collection(db,"matchesEuro2024"))
         setClassname1("categoryItems active")
         setClassname2("categoryItems")
     }
     const handleActivateCopa = () => {
         setActiveScroll(copaMatches)
-        console.log(copaMatches)
-        setDatabase(collection(db,"matchesCopaAmerica"))
         setClassname1("categoryItems")
         setClassname2("categoryItems active")
     }
-
-    const fetchMatchData = async (collectionRef: any,userId:string | undefined) => {
-        const matchData = await getDocs(collectionRef);
-        // @ts-ignore
-        const matches = matchData.docs.map((doc) => ({ id: doc.id, ...doc.data() } as MatchData));
-        const matchesWithUserPredictions: MatchData[] = [];
-        for (let i = 0; i < matches.length; i++) {
-            const predictionData = await getDocs(collection(doc(collectionRef, matches[i].id), "predictions"));
-            const predictions: Prediction[] = predictionData.docs.map((doc) => ({ id: doc.id, ...doc.data() }) as Prediction);
-            if (predictions.length >0){
-                for (let j = 0; j < predictions.length; j++) {
-                    if (predictions[j].id === matches[i].id+userId){
-                        matchesWithUserPredictions.push(matches[i]);
-                    }
-                }
-                return matchesWithUserPredictions;
-            }
-        }
-    };
-
-    useEffect(() => {
-        fetchMatchData(euroMatchesRef,userId).then(data => {
-                if (data !== null){
-                    setEuroMatches(data)
-                    setActiveScroll(data)
-                }
-            }
-        )
-
-        fetchMatchData(copaMatchesRef,userId).then(data => {
-                if (data !== null)
-                    setCopaMatches(data)
-            }
-        )
-
-    }, []);
 
     const handleClickCopy = () => {
         navigator.clipboard.writeText(walletId)
@@ -105,6 +121,22 @@ const ProfilePage = () => {
     const handleOpenNameEditor = () => {
         setNameEditorOpen(true);
     }
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
+    };
+    const updateUserPrediction = async (userId:string | undefined,nickname:string): Promise<void> => {
+        const userPredictionDocRef = doc(collection(db, 'users'),userId);
+        await setDoc(userPredictionDocRef, { nickname: nickname});
+        console.log("User nickname updated");
+    };
+    const handleSubmit = async () => {
+        if (inputValue !== name){
+            setName(inputValue);
+            await updateUserPrediction(userId,inputValue);
+            setInputValue('');
+            setNameEditorOpen(false);
+        }
+    };
 
     return (
         <div className={"profileDetails"}>
@@ -116,11 +148,18 @@ const ProfilePage = () => {
                         fontSize: "16px",
                         color: "white",
                         width:170
-                    }}>{nick} <text className={"subInfo"}></text></text>
+                    }}>{name} <text className={"subInfo"}></text></text>
                     <div className={"profile-edit-verified"}>
+                        <button onClick={handleOpenNameEditor} className={"membershipBadge"} style={{
+                            paddingTop:0,
+                            height:22,
+                            textDecoration: "none"
+                        }}>EDIT
+                        </button>
                         <NavLink to={"/store"} className={"membershipBadge"} style={{
-                            textDecoration:"none"
+                            textDecoration: "none"
                         }}>FREE</NavLink>
+
                     </div>
                 </div>
                 <div className={"wallet-address"}>
@@ -180,20 +219,37 @@ const ProfilePage = () => {
                     <div style={{
                         marginLeft:-8
                     }}>
-                        {activeScroll !== undefined &&
-                            <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 75}
+                        {activeScroll.length>0 &&
+                            <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 35}
                                                                   itemsList={activeScroll}
-                                                                  database={database}></ScrollContainerVerticalForMatchSlots>}
-                        {activeScroll === undefined &&
+                                                                  predictions={predictionData}></ScrollContainerVerticalForMatchSlots>}
+                        {activeScroll.length === 0 &&
                             <text className={"subInfo"}>You have no prediction in this category</text>
                         }
                     </div>
 
                 </div>
             </div>
+            <NameEditor isOpen={isNameEditorOpen} close={() => setNameEditorOpen(false)}>
+                <p>You can change your name here.</p>
+                <p style={{
+                    marginTop: 10
+                }}>
+                    <input type="text"
+                           value={inputValue}
+                           onChange={handleInputChange}
+                           placeholder="Enter new nickname"
+
+                           style={{
+                               height: 16,
+                               resize: "none",
+                               color:"black"
+                           }}></input>
+                </p>
+                <button onClick={handleSubmit}>Change Name</button>
+            </NameEditor>
         </div>
-    )
-        ;
+    );
 };
 
 export default ProfilePage;

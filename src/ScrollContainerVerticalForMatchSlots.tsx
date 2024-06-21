@@ -5,10 +5,10 @@ import MatchSlot from "./MatchSlot";
 interface ListProps  {
     height: number;
     itemsList: string[][];
-    database:any;
+    predictions:string[][];
 }
 
-const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, itemsList,database}) => {
+const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, itemsList,predictions}) => {
     const scrollViewRef = useRef<HTMLDivElement>(null);
     const [filteredItems, setFilteredItems] = useState(itemsList);
 
@@ -40,7 +40,7 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
                         <div key={index}>
                             <MatchSlot
                                 // @ts-ignore
-                                matchId={item.EVENT_ID} team1={item.HOME_NAME} team2={item.AWAY_NAME} score1={item.HOME_SCORE_CURRENT} score2={item.AWAY_SCORE_CURRENT} matchTime={item.START_TIME} category={database}></MatchSlot>
+                                matchId={item.EVENT_ID} team1={item.HOME_NAME} team2={item.AWAY_NAME} score1={item.HOME_SCORE_CURRENT} score2={item.AWAY_SCORE_CURRENT} matchTime={item.START_TIME} predictions={predictions}></MatchSlot>
                         </div>
                     ))}
                 </div>

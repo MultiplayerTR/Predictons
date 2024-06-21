@@ -1,17 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {Link, NavLink} from "react-router-dom";
-import {collection, getDocs, Timestamp} from "firebase/firestore";
-import {copaMatchesRef, db, euroMatchesRef} from "./config/firebase";
 import Flag from "react-world-flags";
-
-type MatchData = {
-    id: string;
-    team1: string;
-    team2: string;
-    score1: number;
-    score2: number;
-    matchHour: Timestamp;
-};
 
 interface ListProps  {
     itemsList: string[][];
@@ -63,7 +51,6 @@ const countryCodes: { [key: string]: string } = {
 
 const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
 
-
     const containerRef = useRef<HTMLDivElement>(null);
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
     const [filteredItems, setFilteredItems] = useState(itemsList);
@@ -71,8 +58,6 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
     useEffect(() => {
 
         const filtered = itemsList.filter(item => {
-            // @ts-ignore
-            console.log(item.STAGE_TYPE)
             // @ts-ignore
             return item.STAGE_TYPE === "LIVE";
         });
@@ -88,8 +73,7 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
                 className="scroll-container-horizontal"
                 style={{ overflow: 'auto', whiteSpace: 'nowrap' }}
             >
-
-                    {filteredItems.map((
+                    {filteredItems.length > 0 &&filteredItems.map((
                         //@ts-ignore
                         item, index) => (
                         <div key={index} ref={el => itemRefs.current[index] = el} className={"liveMatchSlot"}
@@ -135,6 +119,10 @@ const ScrollContainerHorizontal: React.FC<ListProps>= ({itemsList}) => {
                             </div>
                         </div>
                     ))}
+                {filteredItems.length === 0 && <div>
+                    <text className={"bigHeader"}>No live matches at the moment!</text>
+                </div>
+                }
 
             </div>
         </div>

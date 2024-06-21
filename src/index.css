@@ -169,10 +169,11 @@ button:focus, input:focus, select:focus, textarea:focus {
   grid-area: first-row-right;
 }
 .profile-edit-verified{
-  display: grid;
+  display: flex;
   justify-items: end;
   width: 85px;
   font-size: 12px;
+  gap: 5px;
 }
 .rewardText{
   padding-left: 8px;
@@ -204,4 +205,20 @@ button:focus, input:focus, select:focus, textarea:focus {
   font-size: 12px;
   font-weight: normal;
 }
-
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: grey;
+  padding: 20px;
+  border-radius: 5px;
+  top: 30%;
+}

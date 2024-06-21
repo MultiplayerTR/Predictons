@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import ScrollContainerHorizontal from "./ScrollContainerHorizontal";
-import {copaMatchesRef, db, euroMatchesRef} from "./config/firebase";
+import {db} from "./config/firebase";
 import {collection, getDocs} from "firebase/firestore"
 import MatchOfTheDay from "./MatchOfTheDay";
 
@@ -14,46 +14,50 @@ type MatchData = {
     matchHour: string;
 };
 
+export const euroMatchData = async () =>{
+    const url = 'https://flashlive-sports.p.rapidapi.com/v1/tournaments/fixtures?locale=en_GB&tournament_stage_id=EcpQtcVi&tournament_season_id=ABkrguJ9';
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': 'ab36d0a27emshd7b27907adcc0a1p1d9038jsn0effadc41868',
+            'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 const MainPage:React.FC = () => {
 
     const matchOfTheDayRef = collection(db,"matchOfTheDay");
+    const predictions = collection(db,"predictions");
 
     const [euroMatches, setEuroMatches] = useState([]);
     const [copaMatches, setCopaMatches] = useState([]as any);
+    const [predictionData, setPredictionData] = useState([] as any);
     const [matchOfTheDay, setMatchOfTheDay] = useState([] as any);
     const [matchesLive, setMatchesLive] = useState([] as any);
 
     const [activeScroll, setActiveScroll] = useState([]);
-    const [database,setDatabase] = useState(euroMatchesRef);
 
     const [classname1, setClassname1] = useState('categoryItems active');
     const [classname2, setClassname2] = useState('categoryItems');
 
-    const fetchMatchData = async (collectionRef: any): Promise<MatchData[]> => {
-        const matchData = await getDocs(collectionRef);
-        // @ts-ignore
-        const matches = matchData.docs.map((doc) => ({ id: doc.id, ...doc.data() } as MatchData));
-        return matches;
-    };
-
-    const euroMatchData = async () =>{
-        const url = 'https://flashlive-sports.p.rapidapi.com/v1/tournaments/fixtures?locale=en_GB&tournament_stage_id=EcpQtcVi&tournament_season_id=ABkrguJ9';
-        const options = {
-            method: 'GET',
-            headers: {
-                'x-rapidapi-key': '6d2da9a4a8msh5c5c91e352f9038p10911fjsn4d17bc8efc3b',
-                'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
-            }
-        };
-
+    const getPredictions = async () => {
         try {
-            const response = await fetch(url, options);
-            return await response.json();
-        } catch (error) {
-            console.error(error);
+            const prediction = await getDocs(predictions);
+            const simplified = prediction.docs.map((doc) => ({...doc.data(),id:doc.id}));
+            setPredictionData(simplified)
         }
-    }
-
+        catch (err){
+            console.log(err)
+        }
+    };
     const getMatchOfTheDay = async () => {
         try {
             const matchData = await getDocs(matchOfTheDayRef);
@@ -72,23 +76,18 @@ const MainPage:React.FC = () => {
             setActiveScroll(data.DATA[0].EVENTS);
         })
 
-        fetchMatchData(copaMatchesRef).then(data => {
-                setCopaMatches(data)
-            }
-        )
         getMatchOfTheDay();
+        getPredictions();
 
     }, []);
 
     const handleActivateEuro = () => {
         setActiveScroll(euroMatches)
-        setDatabase(collection(db,"matchesEuro2024"))
         setClassname1("categoryItems active")
         setClassname2("categoryItems")
     }
     const handleActivateCopa = () => {
         setActiveScroll(copaMatches)
-        setDatabase(collection(db,"matchesCopaAmerica"))
         setClassname1("categoryItems")
         setClassname2("categoryItems active")
     }
@@ -167,7 +166,7 @@ const MainPage:React.FC = () => {
             <div style={{
                 display: "flex",
             }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 35}
-                                                     itemsList={activeScroll} database={database}></ScrollContainerVerticalForMatchSlots>
+                                                     itemsList={activeScroll} predictions={predictionData}></ScrollContainerVerticalForMatchSlots>
             </div>
 
         </div>

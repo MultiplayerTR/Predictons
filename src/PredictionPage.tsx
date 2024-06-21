@@ -1,25 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
-import {collection, doc, getDocs} from "firebase/firestore";
-import {auth, copaMatchesRef, db, euroMatchesRef} from "./config/firebase";
-
-type MatchData = {
-    id: string;
-    team1: string;
-    team2: string;
-    score1: number;
-    score2: number;
-    matchHour: string;
-};
-type Prediction = {
-    id: string;
-    predictionScore1: string;
-    predictionScore2: string;
-};
+import {collection, getDocs} from "firebase/firestore";
+import {auth, db} from "./config/firebase";
+import {euroMatchData} from "./MainPage";
 
 const PredictionPage = () => {
 
-    const [database,setDatabase] = useState(collection(db,"matchesEuro2024"));
+    const predictions = collection(db,"predictions");
+    const [predictionData, setPredictionData] = useState([] as any);
+    const [filteredItems, setFilteredItems] = useState<string[][]>([]);
     const [activeScroll, setActiveScroll] = useState([] as any);
     const [euroMatches, setEuroMatches] = useState([] as any);
     const [copaMatches, setCopaMatches] = useState([]as any);
@@ -28,6 +17,41 @@ const PredictionPage = () => {
 
     //@ts-ignore
     const userId = auth.currentUser?.uid;
+
+    const getPredictions = async () => {
+        try {
+            const prediction = await getDocs(predictions);
+            const simplified = prediction.docs.map((doc) => ({...doc.data(),id:doc.id}));
+            setPredictionData(simplified)
+            euroMatchData().then(data => {
+                const matches = data.DATA[0].EVENTS as string[][];
+                const filtered = matches.filter((item) => {
+                    for (let i = 0; i < matches.length; i++) {
+                        for (let j = 0; j < simplified.length; j++) {
+                            //@ts-ignore
+                            if(simplified[j].id === matches[i].EVENT_ID+userId){
+                                return simplified[j].id;
+                            }
+                        }
+                    }
+                });
+
+                setFilteredItems(filtered)
+                if (filtered.length>0){
+                    setEuroMatches(filtered)
+                    setActiveScroll(filtered);
+                }
+            })
+        }
+        catch (err){
+            console.log(err)
+        }
+    };
+
+    useEffect(() => {
+        getPredictions();
+
+    }, []);
 
     const handleActivateEuro = () => {
         setActiveScroll(euroMatches)
@@ -63,10 +87,10 @@ const PredictionPage = () => {
                     <img src={require("./Images/CopaAmerica.png")} alt={"Copa America icon"}></img>Copa America
                 </button>
             </div>
-            {activeScroll !== undefined && <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 75}
+            {activeScroll.length>0 && <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 75}
                                                                              itemsList={activeScroll}
-                                                                             database={database}></ScrollContainerVerticalForMatchSlots>}
-            {activeScroll === undefined && <text className={"subInfo"}>You have no prediction in this category</text>
+                                                                             predictions={predictionData}></ScrollContainerVerticalForMatchSlots>}
+            {activeScroll.length === 0 && <text className={"subInfo"}>You have no prediction in this category</text>
             }
 
         </div>
