@@ -44,6 +44,7 @@ const ScrollContainerVerticalForLeaderboard: React.FC<ListProps>= ({height,items
 
     useEffect(() => {
         const fetchData = async () => {
+            let userD:string[][] = [];
             try {
                 for (let i = 0; i < userData.length; i++) {
                     let user: string[] = ['Guest', '0', '0', '0'];
@@ -51,16 +52,16 @@ const ScrollContainerVerticalForLeaderboard: React.FC<ListProps>= ({height,items
                         for (let k = 0; k < predictionData.length; k++) {
                             // @ts-ignore
                             if (predictionData[k].id === items[j].HOME_NAME + items[j].AWAY_NAME + userData[i].id) {
-                                console.log(predictionData[k].id)
                                 user = [userData[i].nickname, predictionData.length.toString(), '3', '9'];
                             }
                         }
                     }
-                    scores.push(user);
+                    userD.push(user);
                 }
             } catch (err) {
                 console.log(err);
             }
+            setUserScores(userD);
         };
 
         fetchData();
