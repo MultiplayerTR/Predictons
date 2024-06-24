@@ -4,13 +4,12 @@ import {getAuth, GoogleAuthProvider,onAuthStateChanged,signInAnonymously} from "
 import {collection, doc, getFirestore, setDoc} from "firebase/firestore";
 
 const firebase = {
-    apiKey: "AIzaSyAjWNYA8jA-GUqt4KkD19eghSrI-pG64Fk",
-    authDomain: "predictons-7e43a.firebaseapp.com",
-    projectId: "predictons-7e43a",
-    storageBucket: "predictons-7e43a.appspot.com",
-    messagingSenderId: "702616578741",
-    appId: "1:702616578741:web:ad32d74564909a2b41ecfc",
-    measurementId: "G-QLWH6V00DJ"
+    apiKey: "AIzaSyDwd6oCgN3-ycZkz_NsyWGpQ8k32Tc3LSs",
+    authDomain: "predictions-caac5.firebaseapp.com",
+    projectId: "predictions-caac5",
+    storageBucket: "predictions-caac5.appspot.com",
+    messagingSenderId: "1092202250048",
+    appId: "1:1092202250048:web:7bc4d6e4ef587fe83b44a5"
 };
 
 
@@ -39,7 +38,6 @@ onAuthStateChanged(auth, async (user) => {
     }
 
 });
-
 
 export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app);

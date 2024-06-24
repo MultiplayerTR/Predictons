@@ -81,8 +81,8 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
 
     let date = new Date(matchTime * 1000);
 
-    const updateUserPrediction = async (matchId: string, userId:string | undefined,prediction: { prediction1: string|undefined, prediction2: string|undefined }): Promise<void> => {
-        const userPredictionDocRef = doc(collection(db, 'predictions'),matchId+userId);
+    const updateUserPrediction = async (team1:string,team2:string ,userId:string | undefined,prediction: { prediction1: string|undefined, prediction2: string|undefined }): Promise<void> => {
+        const userPredictionDocRef = doc(collection(db, 'predictions'),team1+team2+userId);
         await setDoc(userPredictionDocRef, prediction, { merge: true });
         console.log("User prediction updated");
     };
@@ -185,7 +185,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
             prediction1: scoreForTeam1,
             prediction2: scoreForTeam2
         };
-        await updateUserPrediction(matchId,userId,prediction);
+        await updateUserPrediction(team1,team2,userId,prediction);
         setActivateScoreSelection(!activateScoreSelection);
         setHeight(160)
     }

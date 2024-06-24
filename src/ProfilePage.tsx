@@ -4,7 +4,7 @@ import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMa
 import {collection, doc, getDocs, setDoc} from "firebase/firestore";
 import {auth, db} from "./config/firebase";
 import {NavLink} from "react-router-dom";
-import {matchHistory} from "./MainPage";
+import {matchHistoryEuro} from "./MainPage";
 import NameEditor from "./NameEditor";
 
 let nick = "";
@@ -33,7 +33,7 @@ const ProfilePage = () => {
             const prediction = await getDocs(predictions);
             const simplified = prediction.docs.map((doc) => ({...doc.data(),id:doc.id}));
             setPredictionData(simplified)
-            matchHistory().then(data => {
+            matchHistoryEuro().then(data => {
                 const matches = data.DATA[0].EVENTS as string[][];
                 const filtered = matches.filter((item) => {
                     for (const predict of simplified) {

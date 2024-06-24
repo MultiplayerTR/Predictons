@@ -1,24 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NavLink} from "react-router-dom";
 import ScrollContainerVerticalForLeaderboard from "./ScrollContainerVerticalForLeaderboard";
 import PodiumSlot from "./PodiumSlot";
-
-let usersFromDBEuro = [
-        ["user1", "6","4","12"],
-        ["user2", "6","3","9"],
-        ["user3", "6","2","6"],
-        ["user4", "6","2","6"],
-        ["user5", "6","1","3"]
-    ];
-let usersFromDBCopa = [
-        ["user2", "6","4","12"],
-        ["user3", "6","3","9"],
-        ["user1", "6","2","6"]
-    ];
+import {collection, getDocs} from "firebase/firestore";
+import {db} from "./config/firebase";
+import {copaMatchData, matchHistoryCopa, matchHistoryEuro} from "./MainPage";
 
 const LeaderboardPage = () => {
 
-    const [userData, setUserData] = React.useState(usersFromDBEuro);
+    const [euroData, setEuroData] = React.useState([] as any);
+    const [copaData, setCopaData] = React.useState([] as any);
+
+    const [userData, setUserData] = React.useState([]);
 
     const [classname1, setClassname1] = React.useState('categoryItems active');
     const [classname2, setClassname2] = React.useState('categoryItems');
@@ -27,18 +20,33 @@ const LeaderboardPage = () => {
     const [activeButton2, setActiveButton2] = React.useState("durationButton")
     const [activeButton3, setActiveButton3] = React.useState("durationButton")
 
-    const [leaguesEnabled, setLeaguesEnabled] = React.useState(false);
+    const [leaguesEnabled, setLeaguesEnabled] = React.useState(true);
+
+    const combinedMatches = async () => {
+        matchHistoryEuro().then(data => {
+            setEuroData(data.DATA[0].EVENTS)
+            setUserData(data.DATA[0].EVENTS);
+        })
+        matchHistoryCopa().then(data => {
+            setCopaData(data.DATA[0].EVENTS);
+        })
+    }
+
+    useEffect(() => {
+        combinedMatches();
+    }, []);
 
     const handleActivateEuro = () => {
-        setUserData(usersFromDBEuro)
+        setUserData(euroData)
         setClassname1("categoryItems active")
         setClassname2("categoryItems")
     }
     const handleActivateCopa = () => {
-        setUserData(usersFromDBCopa)
+        setUserData(copaData)
         setClassname1("categoryItems")
         setClassname2("categoryItems active")
     }
+
     const handleActivateDaily = () => {
         setActiveButton1("durationButton active")
         setActiveButton2("durationButton")
@@ -71,23 +79,10 @@ const LeaderboardPage = () => {
                         <img src={require("./Images/CopaAmerica.png")} alt={"Copa America icon"}></img>Copa America
                     </button>
                 </div>
-                <div style={{
-                    marginTop: 16
-                }}>
-                    <button onClick={handleActivateDaily} className={activeButton1}>DAILY</button>
-                    <button onClick={handleActivateWeekly} className={activeButton2}>WEEKLY</button>
-                    <button onClick={handleActivateTournament} className={activeButton3}>TOURNAMENT</button>
-                </div>
-                <div className={"podiumContainer"}>
-                    <PodiumSlot length={48} placement={"2"} username={usersFromDBEuro[1][0]}
-                                points={usersFromDBEuro[1][3]}></PodiumSlot>
-                    <PodiumSlot length={72} placement={"1"} username={usersFromDBEuro[0][0]}
-                                points={usersFromDBEuro[0][3]}></PodiumSlot>
-                    <PodiumSlot length={48} placement={"3"} username={usersFromDBEuro[2][0]}
-                                points={usersFromDBEuro[2][3]}></PodiumSlot>
-                </div>
                 <ScrollContainerVerticalForLeaderboard height={window.innerHeight / 100 * 21}
                                                        items={userData}></ScrollContainerVerticalForLeaderboard>
+
+
                 <div style={{
                     display: "grid",
                     textAlign: "left",

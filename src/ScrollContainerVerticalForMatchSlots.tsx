@@ -17,7 +17,6 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
             scrollViewRef.current.scrollTop = 0;
         }
 
-
         const today = new Date();
         const filtered = itemsList.filter(item => {
             //@ts-ignore
@@ -42,13 +41,14 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
                 style={{userSelect: 'none', height: height, overflowY: 'auto'}}
             >
                 <div>
-                    {filteredItems.map((item, index) => (
+                    {filteredItems.length > 0 && filteredItems.map((item, index) => (
                         <div key={index}>
                             <MatchSlot
                                 // @ts-ignore
                                 matchId={item.EVENT_ID} team1={item.HOME_NAME} team2={item.AWAY_NAME} score1={item.HOME_SCORE_CURRENT} score2={item.AWAY_SCORE_CURRENT} matchTime={item.START_TIME} predictions={predictions}></MatchSlot>
                         </div>
                     ))}
+                    {filteredItems.length === 0 && <text className={"subInfo"}>No matches for today!</text>}
                 </div>
             </div>
         </>
