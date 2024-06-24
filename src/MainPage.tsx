@@ -31,6 +31,23 @@ export const euroMatchData = async () =>{
         console.error(error);
     }
 }
+export const matchHistory = async () =>{
+    const url = 'https://flashlive-sports.p.rapidapi.com/v1/tournaments/results?locale=en_GB&tournament_stage_id=EcpQtcVi&tournament_season_id=ABkrguJ9';
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': 'ab36d0a27emshd7b27907adcc0a1p1d9038jsn0effadc41868',
+            'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+    }
+}
 
 const MainPage:React.FC = () => {
 

@@ -4,23 +4,16 @@ import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMa
 import {collection, doc, getDocs, setDoc} from "firebase/firestore";
 import {auth, db} from "./config/firebase";
 import {NavLink} from "react-router-dom";
-import {euroMatchData} from "./MainPage";
+import {matchHistory} from "./MainPage";
 import NameEditor from "./NameEditor";
 
 let nick = "";
 let walletId = "";
 
-type Prediction = {
-    id: string;
-    predictionScore1: string;
-    predictionScore2: string;
-};
-
 const ProfilePage = () => {
 
     const predictions = collection(db,"predictions");
     const users = collection(db,"users");
-    const [filteredItems, setFilteredItems] = useState<string[][]>([]);
     const [predictionData, setPredictionData] = useState([] as any);
     const [isNameEditorOpen, setNameEditorOpen] = useState(false);
     const [name, setName] = useState<string>(nick);
@@ -35,25 +28,21 @@ const ProfilePage = () => {
     //@ts-ignore
     const userId = auth.currentUser?.uid;
 
-    const getPredictions = async () => {
+    const getMatchHistory = async () => {
         try {
             const prediction = await getDocs(predictions);
             const simplified = prediction.docs.map((doc) => ({...doc.data(),id:doc.id}));
             setPredictionData(simplified)
-            euroMatchData().then(data => {
+            matchHistory().then(data => {
                 const matches = data.DATA[0].EVENTS as string[][];
                 const filtered = matches.filter((item) => {
-                    for (let i = 0; i < matches.length; i++) {
-                        for (let j = 0; j < simplified.length; j++) {
-                            //@ts-ignore
-                            if(simplified[j].id === matches[i].EVENT_ID+userId){
-                                return simplified[j].id;
-                            }
+                    for (const predict of simplified) {
+                        //@ts-ignore
+                        if(predict.team1 === item.HOME_NAME && predict.team2 === item.AWAY_NAME){
+                            return predict.id;
                         }
                     }
                 });
-
-                setFilteredItems(filtered)
                 if (filtered.length>0){
                     setEuroMatches(filtered)
                     setActiveScroll(filtered);
@@ -66,9 +55,9 @@ const ProfilePage = () => {
     };
 
     useEffect(() => {
-        getPredictions();
-
+        getMatchHistory()
     }, []);
+
     const getUserData = async () => {
         try {
             const userData = await getDocs(users);
@@ -92,7 +81,6 @@ const ProfilePage = () => {
                 }
             }
         })
-
     }, []);
 
     const handleActivateEuro = () => {
@@ -124,15 +112,14 @@ const ProfilePage = () => {
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
     };
-    const updateUserPrediction = async (userId:string | undefined,nickname:string): Promise<void> => {
+    const updateUserNickname = async (userId:string | undefined,nickname:string): Promise<void> => {
         const userPredictionDocRef = doc(collection(db, 'users'),userId);
         await setDoc(userPredictionDocRef, { nickname: nickname});
-        console.log("User nickname updated");
     };
     const handleSubmit = async () => {
         if (inputValue !== name){
             setName(inputValue);
-            await updateUserPrediction(userId,inputValue);
+            await updateUserNickname(userId,inputValue);
             setInputValue('');
             setNameEditorOpen(false);
         }

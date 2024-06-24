@@ -91,7 +91,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
         if (predictions !== undefined && predictions.length >0){
             for (let i = 0; i < predictions.length; i++) {
                 //@ts-ignore
-                if (predictions[i].id === matchId+userId){
+                if (predictions[i].team1 === team1 && predictions[i].team2 === team2){
                     //@ts-ignore
                     setScoreForTeam1(predictions[i].prediction1)
                     //@ts-ignore
@@ -180,6 +180,8 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
             setRePredictAmount(rePredictAmount)
         }
         const prediction = {
+            team1:team1,
+            team2:team2,
             prediction1: scoreForTeam1,
             prediction2: scoreForTeam2
         };

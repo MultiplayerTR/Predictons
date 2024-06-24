@@ -8,7 +8,6 @@ const PredictionPage = () => {
 
     const predictions = collection(db,"predictions");
     const [predictionData, setPredictionData] = useState([] as any);
-    const [filteredItems, setFilteredItems] = useState<string[][]>([]);
     const [activeScroll, setActiveScroll] = useState([] as any);
     const [euroMatches, setEuroMatches] = useState([] as any);
     const [copaMatches, setCopaMatches] = useState([]as any);
@@ -26,17 +25,14 @@ const PredictionPage = () => {
             euroMatchData().then(data => {
                 const matches = data.DATA[0].EVENTS as string[][];
                 const filtered = matches.filter((item) => {
-                    for (let i = 0; i < matches.length; i++) {
-                        for (let j = 0; j < simplified.length; j++) {
-                            //@ts-ignore
-                            if(simplified[j].id === matches[i].EVENT_ID+userId){
-                                return simplified[j].id;
-                            }
+                    for (const predict of simplified) {
+                        //@ts-ignore
+                        if(predict.team1 === item.HOME_NAME && predict.team2 === item.AWAY_NAME){
+                            return predict.id;
                         }
                     }
                 });
 
-                setFilteredItems(filtered)
                 if (filtered.length>0){
                     setEuroMatches(filtered)
                     setActiveScroll(filtered);
@@ -49,8 +45,7 @@ const PredictionPage = () => {
     };
 
     useEffect(() => {
-        getPredictions();
-
+        getPredictions()
     }, []);
 
     const handleActivateEuro = () => {

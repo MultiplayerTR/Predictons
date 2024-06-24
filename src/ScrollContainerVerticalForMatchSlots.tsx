@@ -17,11 +17,17 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
             scrollViewRef.current.scrollTop = 0;
         }
 
+
         const today = new Date();
         const filtered = itemsList.filter(item => {
-            // @ts-ignore
-            const date = new Date(item.START_TIME * 1000);
-            return date.getDate() === today.getDate();
+            //@ts-ignore
+            if (item.STAGE_TYPE !== "FINISHED"){
+                // @ts-ignore
+                const date = new Date(item.START_TIME * 1000);
+                return date.getDate() === today.getDate();
+            }
+            else
+                return item;
         });
 
         setFilteredItems(filtered);
