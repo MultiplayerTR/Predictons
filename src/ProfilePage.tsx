@@ -7,7 +7,7 @@ import {NavLink} from "react-router-dom";
 import {matchHistoryEuro} from "./MainPage";
 import NameEditor from "./NameEditor";
 
-let nick = "";
+let nick = "Guest";
 let walletId = "";
 
 const ProfilePage = () => {
