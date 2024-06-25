@@ -67,7 +67,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
     const [liveScore1, setLiveScore1] = useState<string>();
     const [liveScore2, setLiveScore2] = useState<string>();
     const [noPrediction, setNoPrediction] = useState(true);
-    const [height, setHeight] = useState<number>(160);
+    const [height, setHeight] = useState<number>(120);
     let [rePredictAmount, setRePredictAmount] = useState<number>(0);
     const [activateScoreSelection, setActivateScoreSelection] = useState<boolean>(false);
     const [rePredictable, setRePredictable] = useState<boolean>(false);
@@ -155,7 +155,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
     const handleScoreSetterActivation = () => {
         setActivateScoreSelection(!activateScoreSelection);
         if (!activateScoreSelection)
-            setHeight(210)
+            setHeight(190)
         else
         {
             setPredictionForTeam1(undefined)
@@ -166,7 +166,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                 setScoreForTeam2(undefined);
             }
 
-            setHeight(160)
+            setHeight(120)
         }
     }
     
@@ -210,12 +210,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                 </div>
                 {activateScoreSelection && <HorizontalNumberSlider min={0} max={10} onSelect={handleSelectTeam1}/>}
             </div>
-            <div style={{
-                height: 140,
-            }}>
-                <h6 className={"subInfo"}>GROUP STAGE </h6>
-                <h6 className={"subInfo"}>MD 1</h6>
-                <h6 className={"subInfo"}>GROUP A</h6>
+            <div>
                 {!matchDone && <div>
                     {!matchLive && <div>
                         {predictEnable && <h6 className={"subInfo"} style={{

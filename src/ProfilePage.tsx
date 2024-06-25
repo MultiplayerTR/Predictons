@@ -4,7 +4,7 @@ import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMa
 import {collection, doc, getDocs, setDoc} from "firebase/firestore";
 import {auth, db} from "./config/firebase";
 import {NavLink} from "react-router-dom";
-import {matchHistoryEuro} from "./MainPage";
+import {matchHistoryCopa, matchHistoryEuro} from "./MainPage";
 import NameEditor from "./NameEditor";
 
 let nick = "Guest";
@@ -46,6 +46,20 @@ const ProfilePage = () => {
                 if (filtered.length>0){
                     setEuroMatches(filtered)
                     setActiveScroll(filtered);
+                }
+            })
+            matchHistoryCopa().then(data => {
+                const matches = data.DATA[0].EVENTS as string[][];
+                const filtered = matches.filter((item) => {
+                    for (const predict of simplified) {
+                        //@ts-ignore
+                        if(predict.team1 === item.HOME_NAME && predict.team2 === item.AWAY_NAME){
+                            return predict.id;
+                        }
+                    }
+                });
+                if (filtered.length>0){
+                    setCopaMatches(filtered)
                 }
             })
         }

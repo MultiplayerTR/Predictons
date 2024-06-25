@@ -74,7 +74,7 @@ const MatchOfTheDay: React.FC<teams>= ({team1,team2, score1,score2,matchTime}) =
                     }}>{team1}
                     </text>
                 </div>
-                <div>
+                <div >
                     <h2 style={{
                         color: "black",
                         fontSize: "12px",
@@ -84,9 +84,6 @@ const MatchOfTheDay: React.FC<teams>= ({team1,team2, score1,score2,matchTime}) =
                         padding: "3px"
                     }}>MOST POPULAR
                     </h2>
-                    <h2 className={"subInfo"}>GROUP STAGE</h2>
-                    <h2 className={"subInfo"}>MD 1</h2>
-                    <h2 className={"subInfo"}>GROUP A</h2>
                     <h6 style={{
                         color: "white",
                         marginTop: 16
