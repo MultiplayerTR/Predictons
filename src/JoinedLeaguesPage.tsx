@@ -8,18 +8,6 @@ interface privateLeagues {
 }
 
 const leaguesData: privateLeagues[] = [
-    {
-        leagueName: "Test League1",
-        items: [["user1", "6","4","12"],
-            ["user2", "6","3","9"],
-            ["user3", "6","2","6"]]
-    },
-    {
-        leagueName: "Test League2",
-        items: [["user3", "6","3","9"],
-            ["user4", "6","1","3"],
-            ["user5", "6","0","0"]]
-    }
 ];
 
 const JoinedLeaguesPage = () => {
@@ -28,6 +16,8 @@ const JoinedLeaguesPage = () => {
     const [enableLeagues, setEnableLeagues] = React.useState(false);
     const [openJoinedLeagues, setOpenJoinedLeague] = React.useState(false);
     const [openLeague, setOpenLeague] = React.useState<privateLeagues>(leagues[0]);
+
+    const [leaguesEnabled, setLeaguesEnabled] = React.useState(false);
 
     console.log(leagues);
 
@@ -95,7 +85,10 @@ const JoinedLeaguesPage = () => {
                     justifyContent: "center",
                     alignItems: "center"
                 }}>
-                    <NavLink to={"/leagues/create"} className={"createLeagueButton active"}>Create a league</NavLink>
+                    {leaguesEnabled && <NavLink to={"/leagues/create"} className={"createLeagueButton active"}>Create a league</NavLink>}
+                    {!leaguesEnabled && <h2 className={"headerText"} style={{
+                        marginTop:100
+                    }}>Private leagues will be available shortly!</h2>}
                 </div>
             </div>}
             {openJoinedLeagues && <div style={{

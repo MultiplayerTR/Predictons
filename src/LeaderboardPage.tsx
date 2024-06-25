@@ -20,7 +20,7 @@ const LeaderboardPage = () => {
     const [activeButton2, setActiveButton2] = React.useState("durationButton")
     const [activeButton3, setActiveButton3] = React.useState("durationButton")
 
-    const [leaguesEnabled, setLeaguesEnabled] = React.useState(true);
+
 
     const combinedMatches = async () => {
         matchHistoryEuro().then(data => {
@@ -69,7 +69,7 @@ const LeaderboardPage = () => {
             <h1 className={"bigHeader"}>TOURNAMENT LEADERBOARD</h1>
             <text className={"subInfo"}>Make the correct predictions and compete with other players</text>
 
-            {leaguesEnabled && <div>
+            <div>
                 <div className={"buttonContainer"}>
                     <button onClick={handleActivateEuro} className={classname1}>
                         <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>
@@ -109,10 +109,7 @@ const LeaderboardPage = () => {
                     </div>
                 </NavLink>
             </div>
-            }
-            {!leaguesEnabled && <h2 className={"headerText"} style={{
-                marginTop:100
-            }}>Leagues will be available shortly!</h2>}
+
 
         </div>
 
