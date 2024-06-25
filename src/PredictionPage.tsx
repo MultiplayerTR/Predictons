@@ -90,6 +90,7 @@ const PredictionPage = () => {
                 matchHistoryCopa().then(data => {
                     const matches = data.DATA[0].EVENTS as string[][];
                     if (matches.length>0){
+                        console.log(matches)
                         setHistoryCopaMatches(matches)
                     }
                 })
