@@ -57,8 +57,6 @@ const ScrollContainerVerticalForLeaderboard: React.FC<ListProps>= ({height,items
                     let predictions = 0;
                     for (let j = 0; j < items.length; j++) {
                         for (let k = 0; k < predictionData.length; k++) {
-                            console.log(predictionData[k].id)
-                            console.log(userData[i].id)
                             // @ts-ignore
                             if (predictionData[k].id === items[j].HOME_NAME + items[j].AWAY_NAME + userData[i].id) {
                                 predictions++;

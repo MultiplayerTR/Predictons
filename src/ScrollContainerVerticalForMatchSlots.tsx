@@ -28,7 +28,6 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
             else
                 return item;
         });
-
         setFilteredItems(filtered);
 
     }, [itemsList]);
