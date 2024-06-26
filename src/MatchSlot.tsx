@@ -135,11 +135,20 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
             setLiveScore1(score1);
             setLiveScore2(score2);
         }
+        else{
+            setMatchLive(false)
+        }
     }, [date, score1, score2]);
 
     useEffect(() => {
         if (new Date().getTime()/60000-date.getTime()/60000>90){
+            console.log(date.getTime()/60000)
             setMatchDone(true)
+            setScoreForTeam1(predictForTeam1)
+            setScoreForTeam2(predictForTeam2)
+        }
+        else{
+            setMatchDone(false)
             setScoreForTeam1(predictForTeam1)
             setScoreForTeam2(predictForTeam2)
         }
@@ -290,7 +299,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                 marginBottom: 12,
                 justifyContent: "center",
                 alignItems: "center",
-                width:"44.6vh",
+                width:"337.5px",
                 gap:"10px",
             }}>
                 <button onClick={handleScoreSetterActivation} className={"categoryItems"} style={{
