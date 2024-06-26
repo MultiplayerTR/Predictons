@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMatchSlots";
 import {collection, getDocs} from "firebase/firestore";
 import {auth, db} from "./config/firebase";
-import {copaMatchData, euroMatchData, matchHistoryCopa, matchHistoryEuro} from "./MainPage";
+import {copaMatchData, euroMatchData, matchHistoryCopa, matchHistoryEuro} from "./config/firebase";
 
 const PredictionPage = () => {
 
@@ -55,6 +55,7 @@ const PredictionPage = () => {
 
                 if (filtered.length>0){
                     setEuroMatches(filtered)
+                    setActiveScroll(filtered)
                 }
             })
             copaMatchData().then((data => {
@@ -82,7 +83,6 @@ const PredictionPage = () => {
             try {
                 matchHistoryEuro().then(data => {
                     const matches = data.DATA[0].EVENTS as string[][];
-                    console.log(data)
                     if (matches.length>0){
                         setHistoryEuroMatches(matches)
                     }
@@ -90,7 +90,6 @@ const PredictionPage = () => {
                 matchHistoryCopa().then(data => {
                     const matches = data.DATA[0].EVENTS as string[][];
                     if (matches.length>0){
-                        console.log(matches)
                         setHistoryCopaMatches(matches)
                     }
                 })
@@ -104,10 +103,6 @@ const PredictionPage = () => {
         getMatchHistory()
         getPredictions()
     }, []);
-
-    useEffect(() => {
-        console.log(tabs)
-    }, [tabs]);
 
     const handleActivateEuro = () => {
         if (tabs === "Predictions")

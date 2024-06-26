@@ -4,7 +4,7 @@ import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMa
 import {collection, doc, getDocs, setDoc} from "firebase/firestore";
 import {auth, db} from "./config/firebase";
 import {NavLink} from "react-router-dom";
-import {matchHistoryCopa, matchHistoryEuro} from "./MainPage";
+import {matchHistoryCopa, matchHistoryEuro} from "./config/firebase";
 import NameEditor from "./NameEditor";
 
 let nick = "Guest";

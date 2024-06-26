@@ -4,7 +4,7 @@ import ScrollContainerVerticalForLeaderboard from "./ScrollContainerVerticalForL
 import PodiumSlot from "./PodiumSlot";
 import {collection, getDocs} from "firebase/firestore";
 import {db} from "./config/firebase";
-import {copaMatchData, matchHistoryCopa, matchHistoryEuro} from "./MainPage";
+import {matchHistoryCopa, matchHistoryEuro} from "./config/firebase";
 
 const LeaderboardPage = () => {
 

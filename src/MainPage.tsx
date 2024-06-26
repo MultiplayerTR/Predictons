@@ -4,6 +4,7 @@ import ScrollContainerHorizontal from "./ScrollContainerHorizontal";
 import {db} from "./config/firebase";
 import {collection, getDocs} from "firebase/firestore"
 import MatchOfTheDay from "./MatchOfTheDay";
+import {copaMatchData, euroMatchData} from "./config/firebase";
 
 type MatchData = {
     id: string;
@@ -13,75 +14,6 @@ type MatchData = {
     score2: number;
     matchHour: string;
 };
-
-export const euroMatchData = async () =>{
-    const url = 'https://flashlive-sports.p.rapidapi.com/v1/tournaments/fixtures?locale=en_GB&tournament_stage_id=EcpQtcVi&tournament_season_id=ABkrguJ9';
-    const options = {
-        method: 'GET',
-        headers: {
-            'x-rapidapi-key': 'ab36d0a27emshd7b27907adcc0a1p1d9038jsn0effadc41868',
-            'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
-        }
-    };
-
-    try {
-        const response = await fetch(url, options);
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
-}
-export const copaMatchData = async () =>{
-    const url = 'https://flashlive-sports.p.rapidapi.com/v1/tournaments/fixtures?locale=en_GB&tournament_stage_id=zDzsPsN5&tournament_season_id=GIocbJnP';
-    const options = {
-        method: 'GET',
-        headers: {
-            'x-rapidapi-key': 'ab36d0a27emshd7b27907adcc0a1p1d9038jsn0effadc41868',
-            'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
-        }
-    };
-
-    try {
-        const response = await fetch(url, options);
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
-}
-export const matchHistoryEuro = async () =>{
-    const url = 'https://flashlive-sports.p.rapidapi.com/v1/tournaments/results?locale=en_GB&tournament_stage_id=EcpQtcVi&tournament_season_id=ABkrguJ9';
-    const options = {
-        method: 'GET',
-        headers: {
-            'x-rapidapi-key': 'ab36d0a27emshd7b27907adcc0a1p1d9038jsn0effadc41868',
-            'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
-        }
-    };
-
-    try {
-        const response = await fetch(url, options);
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
-}
-export const matchHistoryCopa = async () =>{
-    const url = 'https://flashlive-sports.p.rapidapi.com/v1/tournaments/results?locale=en_GB&tournament_stage_id=zDzsPsN5&tournament_season_id=GIocbJnP';
-    const options = {
-        method: 'GET',
-        headers: {
-            'x-rapidapi-key': 'ab36d0a27emshd7b27907adcc0a1p1d9038jsn0effadc41868',
-            'x-rapidapi-host': 'flashlive-sports.p.rapidapi.com'
-        }
-    };
-
-    try {
-        const response = await fetch(url, options);
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 const MainPage:React.FC = () => {
 
@@ -119,6 +51,8 @@ const MainPage:React.FC = () => {
             console.log(err)
         }
     };
+
+
 
     useEffect(() => {
         euroMatchData().then(data => {
