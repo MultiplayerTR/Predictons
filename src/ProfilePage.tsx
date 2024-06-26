@@ -221,7 +221,7 @@ const ProfilePage = () => {
                         marginLeft:-8
                     }}>
                         {activeScroll.length>0 &&
-                            <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 35}
+                            <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 34}
                                                                   itemsList={activeScroll}
                                                                   predictions={predictionData}></ScrollContainerVerticalForMatchSlots>}
                         {activeScroll.length === 0 &&

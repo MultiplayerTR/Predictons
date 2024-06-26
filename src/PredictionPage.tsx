@@ -156,7 +156,7 @@ const PredictionPage = () => {
                     <img src={require("./Images/CopaAmerica.png")} alt={"Copa America icon"}></img>Copa America
                 </button>
             </div>
-            {activeScroll.length > 0 && <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 72}
+            {activeScroll.length > 0 && <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 71}
                                                                               itemsList={activeScroll}
                                                                               predictions={predictionData}></ScrollContainerVerticalForMatchSlots>}
             {activeScroll.length === 0 && <text className={"subInfo"}>You have no prediction in this category</text>

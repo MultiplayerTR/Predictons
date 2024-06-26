@@ -219,7 +219,7 @@ const MainPage:React.FC = () => {
             </div>
             <div style={{
                 display: "flex",
-            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 35}
+            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 31}
                                                      itemsList={activeScroll} predictions={predictionData}></ScrollContainerVerticalForMatchSlots>
             </div>
 
