@@ -290,7 +290,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                 marginBottom: 12,
                 justifyContent: "center",
                 alignItems: "center",
-                width:"45.5vh",
+                width:"44.6vh",
                 gap:"10px",
             }}>
                 <button onClick={handleScoreSetterActivation} className={"categoryItems"} style={{

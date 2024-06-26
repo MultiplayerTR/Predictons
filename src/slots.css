@@ -6,7 +6,7 @@
     display: grid;
     width: 358px;
     grid-template-rows: 1fr;
-    grid-template-columns: repeat(3,113px);
+    grid-template-columns: repeat(3,108px);
     justify-content: center;
     align-items: center;
     font-size: 24px;
