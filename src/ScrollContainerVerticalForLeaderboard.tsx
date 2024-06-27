@@ -68,7 +68,7 @@ const ScrollContainerVerticalForLeaderboard: React.FC<ListProps>= ({height,items
                                 else{
                                     // @ts-ignore
                                     if ((predictionData[k].prediction1-predictionData[k].prediction2 === items[j].HOME_SCORE_CURRENT-items[j].AWAY_SCORE_CURRENT)){
-                                        points+=3;
+                                        points+=2;
                                     }
                                     // @ts-ignore
                                     else if((predictionData[k].prediction1>predictionData[k].prediction2 &&items[j].HOME_SCORE_CURRENT>items[j].AWAY_SCORE_CURRENT) || (predictionData[k].prediction1<predictionData[k].prediction2 &&items[j].HOME_SCORE_CURRENT<items[j].AWAY_SCORE_CURRENT)|| (predictionData[k].prediction1===predictionData[k].prediction2 &&items[j].HOME_SCORE_CURRENT===items[j].AWAY_SCORE_CURRENT)){
