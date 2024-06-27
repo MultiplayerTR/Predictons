@@ -24,6 +24,7 @@ const ProfilePage = () => {
     const [copaMatches, setCopaMatches] = useState([]as any);
     const [classname1, setClassname1] = useState('categoryItems active');
     const [classname2, setClassname2] = useState('categoryItems');
+    const [midnightMatch, setMidnightMatch] = useState(false);
 
     //@ts-ignore
     const userId = auth.currentUser?.uid;
@@ -99,11 +100,13 @@ const ProfilePage = () => {
 
     const handleActivateEuro = () => {
         setActiveScroll(euroMatches)
+        setMidnightMatch(false)
         setClassname1("categoryItems active")
         setClassname2("categoryItems")
     }
     const handleActivateCopa = () => {
         setActiveScroll(copaMatches)
+        setMidnightMatch(true)
         setClassname1("categoryItems")
         setClassname2("categoryItems active")
     }
@@ -223,7 +226,7 @@ const ProfilePage = () => {
                         {activeScroll.length>0 &&
                             <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 34}
                                                                   itemsList={activeScroll}
-                                                                  predictions={predictionData}></ScrollContainerVerticalForMatchSlots>}
+                                                                  predictions={predictionData} midnightMatch={midnightMatch}></ScrollContainerVerticalForMatchSlots>}
                         {activeScroll.length === 0 &&
                             <text className={"subInfo"}>You have no prediction in this category</text>
                         }

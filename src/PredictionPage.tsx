@@ -18,6 +18,7 @@ const PredictionPage = () => {
     const [classname2, setClassname2] = useState('categoryItems');
     const [activeButton1, setActiveButton1] = React.useState("durationButton active")
     const [activeButton2, setActiveButton2] = React.useState("durationButton")
+    const [midnightMatch, setMidnightMatch] = useState(false);
 
     const handleActivatePredictions = () => {
         setActiveButton1("durationButton active")
@@ -121,16 +122,20 @@ const PredictionPage = () => {
     }, []);
 
     const handleActivateEuro = () => {
-        if (tabs === "Predictions")
+        if (tabs === "Predictions"){
             setActiveScroll(euroMatches)
+        }
         else if (tabs === "History")
             setActiveScroll(historyEuroMatches)
         setClassname1("categoryItems active")
         setClassname2("categoryItems")
+        setMidnightMatch(false)
     }
     const handleActivateCopa = () => {
-        if (tabs === "Predictions")
+        if (tabs === "Predictions"){
             setActiveScroll(copaMatches)
+            setMidnightMatch(true)
+        }
         else if (tabs === "History")
             setActiveScroll(historyCopaMatches)
         setClassname1("categoryItems")
@@ -169,7 +174,7 @@ const PredictionPage = () => {
             </div>
             {activeScroll.length > 0 && <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 71}
                                                                               itemsList={activeScroll}
-                                                                              predictions={predictionData}></ScrollContainerVerticalForMatchSlots>}
+                                                                              predictions={predictionData} midnightMatch={midnightMatch}></ScrollContainerVerticalForMatchSlots>}
             {activeScroll.length === 0 && <text className={"subInfo"}>You have no prediction in this category</text>
             }
         </div>

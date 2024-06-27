@@ -25,6 +25,8 @@ const MainPage:React.FC = () => {
     const [predictionData, setPredictionData] = useState([] as any);
     const [matchOfTheDay, setMatchOfTheDay] = useState([] as any);
     const [matchesLive, setMatchesLive] = useState([] as any);
+    const [midnightMatch, setMidnightMatch] = useState(false);
+    const [scrollHeight, setScrollHeight] = useState(31);
 
     const [activeScroll, setActiveScroll] = useState([]);
 
@@ -46,6 +48,9 @@ const MainPage:React.FC = () => {
             const matchData = await getDocs(matchOfTheDayRef);
             const simplified = matchData.docs.map((doc) => ({...doc.data(),id:doc.id}))[0] as MatchData;
             setMatchOfTheDay(simplified)
+            if (simplified === undefined){
+                setScrollHeight(58)
+            }
         }
         catch (err){
             console.log(err)
@@ -56,11 +61,13 @@ const MainPage:React.FC = () => {
 
     useEffect(() => {
         euroMatchData().then(data => {
+            setMidnightMatch(false)
             setEuroMatches(data.DATA[0].EVENTS)
             setMatchesLive(data.DATA[0].EVENTS)
             setActiveScroll(data.DATA[0].EVENTS);
         })
         copaMatchData().then(data => {
+            setMidnightMatch(true)
             setCopaMatches(data.DATA[0].EVENTS)
         })
 
@@ -153,8 +160,8 @@ const MainPage:React.FC = () => {
             </div>
             <div style={{
                 display: "flex",
-            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 31}
-                                                     itemsList={activeScroll} predictions={predictionData}></ScrollContainerVerticalForMatchSlots>
+            }}><ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * scrollHeight}
+                                                     itemsList={activeScroll} predictions={predictionData} midnightMatch={midnightMatch}></ScrollContainerVerticalForMatchSlots>
             </div>
 
         </div>

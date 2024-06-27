@@ -6,9 +6,10 @@ interface ListProps  {
     height: number;
     itemsList: string[][];
     predictions:string[][];
+    midnightMatch:boolean;
 }
 
-const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, itemsList,predictions}) => {
+const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, itemsList,predictions,midnightMatch}) => {
     const scrollViewRef = useRef<HTMLDivElement>(null);
     const [filteredItems, setFilteredItems] = useState(itemsList);
 
@@ -20,10 +21,16 @@ const ScrollContainerVerticalForMatchSlots: React.FC<ListProps>= ({height, items
         const today = new Date();
         const filtered = itemsList.filter(item => {
             //@ts-ignore
-            if (item.STAGE_TYPE !== "FINISHED"){
+            if (item.STAGE_TYPE !== "FINISHED"&& !midnightMatch){
                 // @ts-ignore
                 const date = new Date(item.START_TIME * 1000);
                 return date.getDate() === today.getDate();
+            }
+            //@ts-ignore
+            else if (item.STAGE_TYPE !== "FINISHED"&& midnightMatch){
+                // @ts-ignore
+                const date = new Date(item.START_TIME * 1000);
+                return date.getDate() === today.getDate()+1;
             }
             else
                 return item;

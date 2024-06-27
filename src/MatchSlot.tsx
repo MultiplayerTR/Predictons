@@ -229,7 +229,7 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
                             marginTop:16
                         }}> V </h6>}
                         {predictEnable && <h3> {scoreForTeam1 +" - " +scoreForTeam2}</h3>}
-                        {!matchLive && <h6 className={"subInfo"}>{date ? date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }):""}</h6>}
+                        {!matchLive && <h6 className={"subInfo"}>{date ? date.toLocaleTimeString([], { day:"numeric",month:"numeric",year:"numeric",hour: '2-digit', minute: '2-digit',hour12: false}):""}</h6>}
                     </div>}
                     {matchLive && <div style={{
                         marginTop:10
