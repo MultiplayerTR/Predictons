@@ -38,7 +38,7 @@ const ProfilePage = () => {
                 const filtered = matches.filter((item) => {
                     for (const predict of simplified) {
                         //@ts-ignore
-                        if(predict.team1 === item.HOME_NAME && predict.team2 === item.AWAY_NAME){
+                        if(predict.id === item.HOME_NAME + item.AWAY_NAME + userId){
                             return predict.id;
                         }
                     }

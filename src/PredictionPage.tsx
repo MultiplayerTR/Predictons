@@ -37,17 +37,32 @@ const PredictionPage = () => {
     //@ts-ignore
     const userId = auth.currentUser?.uid;
 
-    const getPredictions = async () => {
+    const filterPredictions = async () =>{
         try {
             const prediction = await getDocs(predictions);
             const simplified = prediction.docs.map((doc) => ({...doc.data(),id:doc.id}));
-            setPredictionData(simplified)
+            const filtered = simplified.filter((item) => {
+                    //@ts-ignore
+                    if(item.id.includes(userId)){
+                        return item;
+                    }
+
+            });
+            setPredictionData(filtered);
+        }
+        catch (err){
+            console.log(err)
+        }
+    }
+
+    const getPredictions = async () => {
+        try {
             euroMatchData().then(data => {
                 const matches = data.DATA[0].EVENTS as string[][];
                 const filtered = matches.filter((item) => {
-                    for (const predict of simplified) {
+                    for (const predict of predictionData) {
                         //@ts-ignore
-                        if(predict.team1 === item.HOME_NAME && predict.team2 === item.AWAY_NAME){
+                        if(predict.id === item.HOME_NAME + item.AWAY_NAME + userId){
                             return predict.id;
                         }
                     }
@@ -61,9 +76,9 @@ const PredictionPage = () => {
             copaMatchData().then((data => {
                 const matches = data.DATA[0].EVENTS as string[][];
                 const filtered = matches.filter((item) => {
-                    for (const predict of simplified) {
+                    for (const predict of predictionData) {
                         //@ts-ignore
-                        if(predict.team1 === item.HOME_NAME && predict.team2 === item.AWAY_NAME){
+                        if(predict.id === item.HOME_NAME + item.AWAY_NAME + userId){
                             return predict.id;
                         }
                     }
@@ -100,6 +115,7 @@ const PredictionPage = () => {
         };
 
     useEffect(() => {
+        filterPredictions();
         getMatchHistory()
         getPredictions()
     }, []);

@@ -142,7 +142,6 @@ const MatchSlot: React.FC<teams>= ({matchId, team1,team2, score1,score2,matchTim
 
     useEffect(() => {
         if (new Date().getTime()/60000-date.getTime()/60000>90){
-            console.log(date.getTime()/60000)
             setMatchDone(true)
             setScoreForTeam1(predictForTeam1)
             setScoreForTeam2(predictForTeam2)
