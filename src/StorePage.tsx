@@ -17,15 +17,23 @@ const StorePage = () => {
                 display:"grid",
                 textAlign:"left",
                 width:"90vw",
-                marginTop:18,
+                paddingTop:18,
+                marginLeft:15
             }}>
                 <text className={"headerText"}>Choose the Membership</text>
                 <text className={"subInfo"}>Choose Membership Type</text>
             </div>
             <div>
-                <MembershipSlot VIP={false}></MembershipSlot>
-                <MembershipSlot VIP={true}></MembershipSlot>
-                <button className={"createLeagueButton active"}>VIP Membership will be available soon</button>
+                <div>
+                    <MembershipSlot VIP={false}></MembershipSlot>
+                </div>
+                <div className={"vip-background"}>
+                    <MembershipSlot VIP={true}></MembershipSlot>
+                    <button className={"createLeagueButton active"} style={{
+                        marginLeft:15
+                    }}>VIP Membership will be available soon</button>
+                </div>
+
             </div>
         </div>
     );

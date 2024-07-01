@@ -14,6 +14,8 @@ const MembershipSlot:React.FC<vipStatus> = ({VIP}) => {
 
     return (
         <div style={{
+            marginLeft:"15px",
+            marginRight:"15px",
             marginTop:8
         }}>
             {!vip &&
@@ -70,7 +72,7 @@ const MembershipSlot:React.FC<vipStatus> = ({VIP}) => {
                         height: 28,
                         borderRadius: 4
                     }}>VIP Membership</h4>
-                    <div className={"membershipSlotItem"}>
+                    <div className={"membershipSlotItem vip"}>
                         <div style={{
                             textAlign: "center",
                             placeItems: "center"
@@ -82,7 +84,7 @@ const MembershipSlot:React.FC<vipStatus> = ({VIP}) => {
                             <h4 className={"slotTextLeft"}>In-Game Features/Boosts</h4>
                         </div>
                     </div>
-                    <div className={"membershipSlotItem"}>
+                    <div className={"membershipSlotItem vip"}>
                         <div style={{
                             textAlign: "center",
                             placeItems: "center"
@@ -94,7 +96,7 @@ const MembershipSlot:React.FC<vipStatus> = ({VIP}) => {
                             <h4 className={"slotTextLeft"}>VIP sub ticket</h4>
                         </div>
                     </div>
-                    <div className={"membershipSlotItem"}>
+                    <div className={"membershipSlotItem vip"}>
                         <div style={{
                             textAlign: "center",
                             placeItems: "center"

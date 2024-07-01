@@ -81,8 +81,6 @@ const LeaderboardPage = () => {
                 </div>
                 <ScrollContainerVerticalForLeaderboard height={window.innerHeight / 100 * 21}
                                                        items={userData}></ScrollContainerVerticalForLeaderboard>
-
-
                 <div style={{
                     display: "grid",
                     textAlign: "left",

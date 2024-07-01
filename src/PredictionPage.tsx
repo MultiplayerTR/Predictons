@@ -3,6 +3,7 @@ import ScrollContainerVerticalForMatchSlots from "./ScrollContainerVerticalForMa
 import {collection, getDocs} from "firebase/firestore";
 import {auth, db} from "./config/firebase";
 import {copaMatchData, euroMatchData, matchHistoryCopa, matchHistoryEuro} from "./config/firebase";
+import Loading from "./Loading";
 
 const PredictionPage = () => {
 
@@ -19,6 +20,7 @@ const PredictionPage = () => {
     const [activeButton1, setActiveButton1] = React.useState("durationButton active")
     const [activeButton2, setActiveButton2] = React.useState("durationButton")
     const [midnightMatch, setMidnightMatch] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleActivatePredictions = () => {
         setActiveButton1("durationButton active")
@@ -39,6 +41,7 @@ const PredictionPage = () => {
     const userId = auth.currentUser?.uid;
 
     const filterPredictions = async () =>{
+        setIsLoading(true)
         try {
             const prediction = await getDocs(predictions);
             const simplified = prediction.docs.map((doc) => ({...doc.data(),id:doc.id}));
@@ -47,12 +50,14 @@ const PredictionPage = () => {
                     if(item.id.includes(userId)){
                         return item;
                     }
-
             });
             setPredictionData(filtered);
         }
         catch (err){
             console.log(err)
+        }
+        finally {
+            setIsLoading(false)
         }
     }
 
@@ -68,7 +73,6 @@ const PredictionPage = () => {
                         }
                     }
                 });
-
                 if (filtered.length>0){
                     setEuroMatches(filtered)
                     setActiveScroll(filtered)
@@ -143,40 +147,43 @@ const PredictionPage = () => {
     }
 
     return (
-
         <div>
-            <div style={{
-                textAlign: "left",
-                marginTop: 16,
-                marginLeft: 10,
-            }}>
-                <h4 style={{}}>Predictions</h4>
-                <text className={"subInfo"}>Prizes will be received at the end of the tournament.</text>
-            </div>
-            <div style={{
-                marginTop: 16,
-                gap:20
-            }}>
-                <button onClick={handleActivatePredictions} className={activeButton1}>PREDICTIONS</button>
-                <button onClick={handleActivateHistory} className={activeButton2}>MATCH HISTORY</button>
-            </div>
-            <div className={"buttonContainer"} style={{
-                marginTop: 10,
-                marginLeft: 8,
-            }}>
-                <button onClick={handleActivateEuro} className={classname1}>
-                    <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>
-                    Euro 2024
-                </button>
-                <button onClick={handleActivateCopa} className={classname2}>
-                    <img src={require("./Images/CopaAmerica.png")} alt={"Copa America icon"}></img>Copa America
-                </button>
-            </div>
-            {activeScroll.length > 0 && <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 71}
-                                                                              itemsList={activeScroll}
-                                                                              predictions={predictionData} midnightMatch={midnightMatch}></ScrollContainerVerticalForMatchSlots>}
-            {activeScroll.length === 0 && <text className={"subInfo"}>You have no prediction in this category</text>
-            }
+            {isLoading ? (<Loading />) : (
+                <div>
+                    <div style={{
+                        textAlign: "left",
+                        marginTop: 16,
+                        marginLeft: 10,
+                    }}>
+                        <h4 style={{}}>Predictions</h4>
+                        <text className={"subInfo"}>Prizes will be received at the end of the tournament.</text>
+                    </div>
+                    <div style={{
+                        marginTop: 16,
+                        gap:20
+                    }}>
+                        <button onClick={handleActivatePredictions} className={activeButton1}>PREDICTIONS</button>
+                        <button onClick={handleActivateHistory} className={activeButton2}>MATCH HISTORY</button>
+                    </div>
+                    <div className={"buttonContainer"} style={{
+                        marginTop: 10,
+                        marginLeft: 8,
+                    }}>
+                        <button onClick={handleActivateEuro} className={classname1}>
+                            <img src={require("./Images/Euro2024.png")} alt={"Euro2024 icon"}></img>
+                            Euro 2024
+                        </button>
+                        <button onClick={handleActivateCopa} className={classname2}>
+                            <img src={require("./Images/CopaAmerica.png")} alt={"Copa America icon"}></img>Copa America
+                        </button>
+                    </div>
+                    {activeScroll.length > 0 && <ScrollContainerVerticalForMatchSlots height={window.innerHeight / 100 * 71}
+                                                                                      itemsList={activeScroll}
+                                                                                      predictions={predictionData} midnightMatch={midnightMatch}></ScrollContainerVerticalForMatchSlots>}
+                    {activeScroll.length === 0 && <text className={"subInfo"}>You have no prediction in this category</text>
+                    }
+                </div>
+            )}
         </div>
     );
 };

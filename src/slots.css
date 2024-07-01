@@ -51,6 +51,12 @@
     grid-template-areas:"first-column" "second-column";
     border-radius: 4px;
 }
+.membershipSlotItem.vip{
+    background: #FFFFFF33;
+    border: 1px solid white;
+    border-radius: 4px;
+}
+
 .badgeSlots{
     width:125px;
     height:20px;

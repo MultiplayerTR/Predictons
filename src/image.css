@@ -35,3 +35,8 @@
     object-fit: cover;
     display: inline-block;
 }
+.vip-background{
+    width: 100vw;
+    height: 55vh;
+    background-image: url("/src/Images/StarBG.png");
+}

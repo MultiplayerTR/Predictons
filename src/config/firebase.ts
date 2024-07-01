@@ -1,5 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import {getAuth, GoogleAuthProvider,onAuthStateChanged,signInAnonymously} from "firebase/auth";
 import {collection, doc, getFirestore, setDoc} from "firebase/firestore";
 
@@ -14,7 +13,6 @@ const firebase = {
 
 
 const app = initializeApp(firebase);
-const analytics = getAnalytics(app);
 export const auth = getAuth();
 
 onAuthStateChanged(auth, async (user) => {
@@ -40,7 +38,7 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 export const euroMatchData = async () =>{
-    const url = 'https://flashlive-sports.p.rapidapi.com/v1/tournaments/fixtures?locale=en_GB&tournament_stage_id=EcpQtcVi&tournament_season_id=ABkrguJ9';
+    const url = 'https://flashlive-sports.p.rapidapi.com/v1/tournaments/fixtures?locale=en_GB&tournament_stage_id=SMaVweFA&tournament_season_id=ABkrguJ9';
     const options = {
         method: 'GET',
         headers: {

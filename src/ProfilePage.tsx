@@ -5,7 +5,6 @@ import {collection, doc, getDocs, setDoc} from "firebase/firestore";
 import {auth, db} from "./config/firebase";
 import {NavLink} from "react-router-dom";
 import {matchHistoryCopa, matchHistoryEuro} from "./config/firebase";
-import NameEditor from "./NameEditor";
 
 let nick = "Guest";
 let walletId = "";
@@ -122,10 +121,6 @@ const ProfilePage = () => {
                 console.error('Failed to copy text: ', err);
             });
     }
-
-    const handleOpenNameEditor = () => {
-        setNameEditorOpen(true);
-    }
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
     };
@@ -154,16 +149,10 @@ const ProfilePage = () => {
                         width:170
                     }}>{name} <text className={"subInfo"}></text></text>
                     <div className={"profile-edit-verified"}>
-                        <button onClick={handleOpenNameEditor} className={"membershipBadge"} style={{
-                            paddingTop:0,
-                            height:22,
-                            textDecoration: "none"
-                        }}>EDIT
-                        </button>
                         <NavLink to={"/store"} className={"membershipBadge"} style={{
+                            marginLeft:40,
                             textDecoration: "none"
                         }}>FREE</NavLink>
-
                     </div>
                 </div>
                 <div className={"wallet-address"}>
@@ -231,27 +220,8 @@ const ProfilePage = () => {
                             <text className={"subInfo"}>You have no prediction in this category</text>
                         }
                     </div>
-
                 </div>
             </div>
-            <NameEditor isOpen={isNameEditorOpen} close={() => setNameEditorOpen(false)}>
-                <p>You can change your name here.</p>
-                <p style={{
-                    marginTop: 10
-                }}>
-                    <input type="text"
-                           value={inputValue}
-                           onChange={handleInputChange}
-                           placeholder="Enter new nickname"
-
-                           style={{
-                               height: 16,
-                               resize: "none",
-                               color:"black"
-                           }}></input>
-                </p>
-                <button onClick={handleSubmit}>Change Name</button>
-            </NameEditor>
         </div>
     );
 };
